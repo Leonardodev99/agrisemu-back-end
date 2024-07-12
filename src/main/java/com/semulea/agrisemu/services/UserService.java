@@ -1,11 +1,13 @@
 package com.semulea.agrisemu.services;
 
+
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.semulea.agrisemu.dto.UserDTO;
+import com.semulea.agrisemu.dto.UserMinDTO;
 import com.semulea.agrisemu.entties.User;
 import com.semulea.agrisemu.repositories.UserRepository;
 
@@ -15,12 +17,22 @@ public class UserService {
 	@Autowired
 	private UserRepository repository;
 	
-	public List<User> findAll() {
-		return repository.findAll();
+	public List<UserMinDTO> findAll() {
+		List<User> result = repository.findAll();
+		return result.stream().map(x -> new UserMinDTO(x)).toList();
+		
 	}
-	public User findById(Long id) {
-		Optional<User> obj = repository.findById(id);
-		return obj.get();
+	
+	public UserMinDTO findById(Long id) {
+		 User result = repository.findById(id).get();
+		 return new UserMinDTO(result);
+		
+	}
+	
+	public UserDTO insert(UserDTO userDTO) {
+		User user = new User(userDTO);
+		User savedUser = repository.save(user);
+		 return  new UserDTO(savedUser);
 	}
 
 }
