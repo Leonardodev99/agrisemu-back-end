@@ -10,6 +10,7 @@ import com.semulea.agrisemu.dto.UserDTO;
 import com.semulea.agrisemu.dto.UserMinDTO;
 import com.semulea.agrisemu.entties.User;
 import com.semulea.agrisemu.repositories.UserRepository;
+import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -24,7 +25,7 @@ public class UserService {
 	}
 	
 	public UserMinDTO findById(Long id) {
-		 User result = repository.findById(id).get();
+		 User result = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		 return new UserMinDTO(result);
 		
 	}
