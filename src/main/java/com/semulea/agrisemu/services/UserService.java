@@ -38,5 +38,23 @@ public class UserService {
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
+	
+	public UserDTO update(Long id, UserDTO userDTO) {
+		User existingUser = repository.findById(id).get();
+		
+		if (userDTO.getUsername() != null) {
+            existingUser.setUsername(userDTO.getUsername());
+        }
+        if (userDTO.getEmail() != null) {
+            existingUser.setEmail(userDTO.getEmail());
+        }
+        if (userDTO.getPassword() != null) {
+            existingUser.setPassword(userDTO.getPassword());
+        }
+		
+		User updatedUser = repository.save(existingUser);
+		
+		return new UserDTO(updatedUser);
+	}
 
 }
