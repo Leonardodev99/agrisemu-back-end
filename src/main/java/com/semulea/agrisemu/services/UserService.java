@@ -4,6 +4,7 @@ package com.semulea.agrisemu.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import com.semulea.agrisemu.dto.UserDTO;
@@ -37,7 +38,13 @@ public class UserService {
 	}
 	
 	public void delete(Long id) {
+		
+		if(!repository.existsById(id)) {
+			throw new ResourceNotFoundException(id);
+		}
+		
 		repository.deleteById(id);
+		 
 	}
 	
 	public UserDTO update(Long id, UserDTO userDTO) {
