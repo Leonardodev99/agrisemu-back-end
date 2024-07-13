@@ -19,6 +19,8 @@ import com.semulea.agrisemu.dto.UserDTO;
 import com.semulea.agrisemu.dto.UserMinDTO;
 import com.semulea.agrisemu.services.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
@@ -40,7 +42,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	@PostMapping
-	private ResponseEntity<UserDTO> insert(@RequestBody UserDTO obj) {
+	private ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri();
