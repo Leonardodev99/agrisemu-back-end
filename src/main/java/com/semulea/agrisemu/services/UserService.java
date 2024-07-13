@@ -26,7 +26,8 @@ public class UserService {
 	}
 	
 	public UserMinDTO findById(Long id) {
-		 User result = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		
+		User result = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		 return new UserMinDTO(result);
 		
 	}
@@ -48,7 +49,7 @@ public class UserService {
 	}
 	
 	public UserDTO update(Long id, UserDTO userDTO) {
-		User existingUser = repository.findById(id).get();
+		User existingUser = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		
 		if (userDTO.getUsername() != null) {
             existingUser.setUsername(userDTO.getUsername());
