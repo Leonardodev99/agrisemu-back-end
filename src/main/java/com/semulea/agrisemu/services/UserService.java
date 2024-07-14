@@ -4,6 +4,7 @@ package com.semulea.agrisemu.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.semulea.agrisemu.dto.UserDTO;
@@ -19,16 +20,24 @@ public class UserService {
 	@Autowired
 	private UserRepository repository;
 	
+	 @Autowired
+	    private PasswordEncoder passwordEncoder;
+
+	    public User saveUser(User user) {
+	        user.setPassword(passwordEncoder.encode(user.getPassword()));
+	        return repository.save(user);
+	    }
+	
 	public List<UserMinDTO> findAll() {
 		List<User> result = repository.findAll();
 		return result.stream().map(x -> new UserMinDTO(x)).toList();
 		
 	}
 	
-	public UserMinDTO findById(Long id) {
+	public UserDTO findById(Long id) {
 		
 		User result = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-		 return new UserMinDTO(result);
+		 return new UserDTO(result);
 		
 	}
 	
