@@ -9,7 +9,6 @@ public class PasswordEncoderUtil {
 	        String rawPassword = "123456"; // A senha em texto simples que você deseja codificar
 	        String encodedPassword = encoder.encode(rawPassword);
 	        System.out.println("Senha codificada: " + encodedPassword);
-
 	}
 
 }
