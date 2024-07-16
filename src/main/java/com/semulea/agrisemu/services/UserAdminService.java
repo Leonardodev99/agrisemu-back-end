@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.semulea.agrisemu.dto.UserAdminDTO;
 import com.semulea.agrisemu.entties.UserAdmin;
 import com.semulea.agrisemu.repositories.UserAdminRepository;
+import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserAdminService {
@@ -18,5 +19,10 @@ public class UserAdminService {
 	public List<UserAdminDTO> findAll () {
 		List<UserAdmin> result = adminRepository.findAll();
 		return result.stream().map(x -> new UserAdminDTO(x)).toList();
+	}
+	
+	public UserAdminDTO findById(Long id) {
+		UserAdmin result = adminRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		return new UserAdminDTO(result);
 	}
 }
