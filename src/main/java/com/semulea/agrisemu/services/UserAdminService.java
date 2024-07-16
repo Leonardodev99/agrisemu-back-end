@@ -25,4 +25,10 @@ public class UserAdminService {
 		UserAdmin result = adminRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		return new UserAdminDTO(result);
 	}
+	
+	public UserAdminDTO insert(UserAdminDTO userAdminDTO) {
+		UserAdmin obj = new UserAdmin(userAdminDTO);
+		UserAdmin savedUser = adminRepository.save(obj);
+		return new UserAdminDTO(savedUser);
+	}
 }

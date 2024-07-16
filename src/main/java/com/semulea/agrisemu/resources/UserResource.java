@@ -42,7 +42,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	@PostMapping
-	private ResponseEntity<UserWorkerDTO> insert(@Valid @RequestBody UserWorkerDTO obj) {
+	public ResponseEntity<UserWorkerDTO> insert(@Valid @RequestBody UserWorkerDTO obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri();
