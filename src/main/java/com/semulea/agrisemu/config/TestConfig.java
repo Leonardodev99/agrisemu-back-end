@@ -7,7 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import com.semulea.agrisemu.entties.User;
+import com.semulea.agrisemu.entties.UserWorker;
 import com.semulea.agrisemu.entties.UserAdmin;
 import com.semulea.agrisemu.repositories.UserAdminRepository;
 import com.semulea.agrisemu.repositories.UserRepository;
@@ -25,13 +25,13 @@ public class TestConfig implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		User u1 = new User(null, "Pedro Sambongo", "pedro@gmail.com", "$2a$10$S5fAGhBxeRP91DKj0ohZhu78jVjCmFCEi2HRv0xPwTk6cC4SIwWNq");
-		User u2 = new User(null, "Miguel Canga", "canga@gmail.com", "$2a$10$PFYpZUPIuphIdX7h8SBE0eycKSb/xfPCeNGMsKH47hQN2XmrmnrLu");
+		UserWorker u1 = new UserWorker(null, "Pedro Sambongo", "pedro@gmail.com", "123456");
+		UserWorker u2 = new UserWorker(null, "Miguel Canga", "canga@gmail.com", "123456");
 		
 		userRepository.saveAll(Arrays.asList(u1, u2));
 		
-		UserAdmin a1 = new UserAdmin(null, "Leonardo Miguel", "miguel@gmail", "913456", "$2a$10$.rr9YMCBrt8KzkRdM09HZ.78Oucvc14wpMCU6wjgNMxY0OtEW8Ooq");
-		UserAdmin a2 = new UserAdmin(null, "Anibal Miguel", "ani@gmail", "9134567", "$2a$10$eDIU6RRhhAIiGJufVk9zfeO51zaNVlmFmemRJkuJ2oB67YY.vU8m.");
+		UserAdmin a1 = new UserAdmin(null, "Leonardo Miguel", "miguel@gmail.com", "913456", "123456");
+		UserAdmin a2 = new UserAdmin(null, "Anibal Miguel", "ani@gmail.com", "9134567", "123456");
 		adminRepository.saveAll(Arrays.asList(a1,a2));
 		
 	}

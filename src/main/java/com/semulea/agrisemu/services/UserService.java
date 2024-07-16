@@ -4,12 +4,11 @@ package com.semulea.agrisemu.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.semulea.agrisemu.dto.UserDTO;
-import com.semulea.agrisemu.dto.UserMinDTO;
-import com.semulea.agrisemu.entties.User;
+import com.semulea.agrisemu.dto.UserWorkerDTO;
+import com.semulea.agrisemu.dto.UserWorkerMinDTO;
+import com.semulea.agrisemu.entties.UserWorker;
 import com.semulea.agrisemu.repositories.UserRepository;
 import com.semulea.agrisemu.resources.exceptions.EmailAlreadyExistsException;
 import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
@@ -20,35 +19,27 @@ public class UserService {
 	@Autowired
 	private UserRepository repository;
 	
-	 @Autowired
-	    private PasswordEncoder passwordEncoder;
-
-	    public User saveUser(User user) {
-	        user.setPassword(passwordEncoder.encode(user.getPassword()));
-	        return repository.save(user);
-	    }
-	
-	public List<UserMinDTO> findAll() {
-		List<User> result = repository.findAll();
-		return result.stream().map(x -> new UserMinDTO(x)).toList();
+	public List<UserWorkerMinDTO> findAll() {
+		List<UserWorker> result = repository.findAll();
+		return result.stream().map(x -> new UserWorkerMinDTO(x)).toList();
 		
 	}
 	
-	public UserDTO findById(Long id) {
+	public UserWorkerDTO findById(Long id) {
 		
-		User result = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-		 return new UserDTO(result);
+		UserWorker result = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		 return new UserWorkerDTO(result);
 		
 	}
 	
 	
-	public UserDTO insert(UserDTO userDTO) {
+	public UserWorkerDTO insert(UserWorkerDTO userDTO) {
 		if(repository.findByEmail(userDTO.getEmail()).isPresent()) {
 			throw new EmailAlreadyExistsException("Email already exists");
 		}
-		User user = new User(userDTO);
-		User savedUser = repository.save(user);
-		 return  new UserDTO(savedUser);
+		UserWorker user = new UserWorker(userDTO);
+		UserWorker savedUser = repository.save(user);
+		 return  new UserWorkerDTO(savedUser);
 	}
 	
 	public void delete(Long id) {
@@ -61,8 +52,8 @@ public class UserService {
 		 
 	}
 	
-	public UserDTO update(Long id, UserDTO userDTO) {
-		User existingUser = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+	public UserWorkerDTO update(Long id, UserWorkerDTO userDTO) {
+		UserWorker existingUser = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		
 		if (userDTO.getUsername() != null) {
             existingUser.setUsername(userDTO.getUsername());
@@ -74,9 +65,9 @@ public class UserService {
             existingUser.setPassword(userDTO.getPassword());
         }
 		
-		User updatedUser = repository.save(existingUser);
+		UserWorker updatedUser = repository.save(existingUser);
 		
-		return new UserDTO(updatedUser);
+		return new UserWorkerDTO(updatedUser);
 	}
 
 }

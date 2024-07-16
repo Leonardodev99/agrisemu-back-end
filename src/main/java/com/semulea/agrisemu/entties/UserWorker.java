@@ -5,7 +5,7 @@ import java.util.Objects;
 
 import org.springframework.beans.BeanUtils;
 
-import com.semulea.agrisemu.dto.UserDTO;
+import com.semulea.agrisemu.dto.UserWorkerDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,8 +18,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
-public class User implements Serializable{
+@Table(name = "users_workers", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+public class UserWorker implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -38,15 +38,15 @@ public class User implements Serializable{
 	@Size(min = 6, message = "Password must be at least 6 characters long")
 	private String password;
 	
-	public User() {
+	public UserWorker() {
 		
 	}
 	
-	public User(UserDTO userDTO) {
+	public UserWorker(UserWorkerDTO userDTO) {
 	    BeanUtils.copyProperties(userDTO, this);
 	}
 
-	public User(Long id, String username, String email, String password) {
+	public UserWorker(Long id, String username, String email, String password) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -99,7 +99,7 @@ public class User implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		UserWorker other = (UserWorker) obj;
 		return Objects.equals(id, other.id);
 	}
 	

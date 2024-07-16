@@ -2,13 +2,13 @@ package com.semulea.agrisemu.dto;
 
 import org.springframework.beans.BeanUtils;
 
-import com.semulea.agrisemu.entties.User;
+import com.semulea.agrisemu.entties.UserWorker;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class UserDTO {
+public class UserWorkerDTO {
 	
 	private Long id;
 	
@@ -24,11 +24,11 @@ public class UserDTO {
 	@Size(min = 6, message = "Password must be at least 6 characters long")
 	private String password;
 	
-	public UserDTO() {
+	public UserWorkerDTO() {
 		
 	}
 
-	public UserDTO(User entity) {
+	public UserWorkerDTO(UserWorker entity) {
 		BeanUtils.copyProperties(entity, this);
 	}
 

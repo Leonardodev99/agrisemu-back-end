@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.semulea.agrisemu.dto.UserDTO;
-import com.semulea.agrisemu.dto.UserMinDTO;
+import com.semulea.agrisemu.dto.UserWorkerDTO;
+import com.semulea.agrisemu.dto.UserWorkerMinDTO;
 import com.semulea.agrisemu.services.UserService;
 
 import jakarta.validation.Valid;
@@ -30,19 +30,19 @@ public class UserResource {
 	private UserService service;
 	
 	@GetMapping
-	public ResponseEntity<List<UserMinDTO>> findAll(){
-		List<UserMinDTO> list = service.findAll();
+	public ResponseEntity<List<UserWorkerMinDTO>> findAll(){
+		List<UserWorkerMinDTO> list = service.findAll();
 		
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
-		UserDTO obj = service.findById(id);
+	public ResponseEntity<UserWorkerDTO> findById(@PathVariable Long id) {
+		UserWorkerDTO obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	@PostMapping
-	private ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO obj) {
+	private ResponseEntity<UserWorkerDTO> insert(@Valid @RequestBody UserWorkerDTO obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri();
@@ -57,7 +57,7 @@ public class UserResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	 public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserDTO obj) {
+	 public ResponseEntity<UserWorkerDTO> update(@PathVariable Long id, @RequestBody UserWorkerDTO obj) {
         obj = service.update(id, obj);
         return ResponseEntity.ok().body(obj);
     }
