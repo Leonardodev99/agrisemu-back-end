@@ -20,7 +20,7 @@ public class UserService {
 		return result.stream().map(x -> new UserDTO(x)).toList();
 	}
 	
-	/*public UserDTO findById(Long id) {
+	public UserDTO findById(Long id) {
 		User result = userRepository.findById(id).get();
 		return new UserDTO(result);
 	}
@@ -40,7 +40,7 @@ public class UserService {
 		User updatedUser = userRepository.save(existsUser);
 		
 		return new UserDTO(updatedUser);
-	}*/
+	}
 	
 
 }
