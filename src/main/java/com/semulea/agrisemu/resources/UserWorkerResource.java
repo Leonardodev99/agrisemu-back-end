@@ -15,34 +15,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.semulea.agrisemu.dto.UserAdminDTO;
-import com.semulea.agrisemu.services.UserAdminService;
+import com.semulea.agrisemu.dto.UserWorkerDTO;
+import com.semulea.agrisemu.dto.UserWorkerMinDTO;
+import com.semulea.agrisemu.services.UserWorkerService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/useradmins")
-public class UserAdminResource {
+@RequestMapping(value = "/usersworker")
+public class UserWorkerResource {
+	
 	
 	@Autowired
-	private UserAdminService adminService;
+	private UserWorkerService service;
 	
 	@GetMapping
-	public ResponseEntity<List<UserAdminDTO>> findAll() {
-		List<UserAdminDTO> list = adminService.findAll();
+	public ResponseEntity<List<UserWorkerMinDTO>> findAll(){
+		List<UserWorkerMinDTO> list = service.findAll();
 		
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<UserAdminDTO> findById(@PathVariable Long id) {
-		UserAdminDTO obj = adminService.findById(id);
+	public ResponseEntity<UserWorkerDTO> findById(@PathVariable Long id) {
+		UserWorkerDTO obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
-	
 	@PostMapping
-	public ResponseEntity<UserAdminDTO> insert(@Valid @RequestBody UserAdminDTO obj) {
-		obj = adminService.insert(obj);
+	public ResponseEntity<UserWorkerDTO> insert(@Valid @RequestBody UserWorkerDTO obj) {
+		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
@@ -50,16 +51,14 @@ public class UserAdminResource {
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		adminService.delete(id);
-		return ResponseEntity.noContent().build();
+			service.delete(id);
+			return ResponseEntity.noContent().build();
+
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserAdminDTO> update(@PathVariable Long id,@Valid @RequestBody UserAdminDTO obj) {
-		obj = adminService.update(id, obj);
-		return ResponseEntity.ok().body(obj);
-	}
-	
-	
-
+	 public ResponseEntity<UserWorkerDTO> update(@PathVariable Long id,@Valid @RequestBody UserWorkerDTO obj) {
+        obj = service.update(id, obj);
+        return ResponseEntity.ok().body(obj);
+    }
 }

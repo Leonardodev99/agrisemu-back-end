@@ -11,5 +11,7 @@ import com.semulea.agrisemu.entties.UserAdmin;
 public interface UserAdminRepository extends JpaRepository<UserAdmin, Long> {
 	
 	Optional<UserAdmin> findByEmail(String email);
+	Optional<UserAdmin> findByPhone(String phone);
+	boolean existsByPhone(String phone);
 
 }
