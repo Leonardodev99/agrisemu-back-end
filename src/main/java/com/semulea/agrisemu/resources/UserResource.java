@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.semulea.agrisemu.dto.UserDTO;
 import com.semulea.agrisemu.services.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value ="/users")
 public class UserResource {
@@ -36,13 +38,13 @@ public class UserResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<UserDTO> insert(@RequestBody UserDTO user) {
+	public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserDTO user) {
 		user = userService.insert(user);
 		return ResponseEntity.ok().body(user);
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserDTO user) {
+	public ResponseEntity<UserDTO> update(@PathVariable Long id,@Valid @RequestBody UserDTO user) {
 		user = userService.update(id, user);
 		return ResponseEntity.ok().body(user);
 	}

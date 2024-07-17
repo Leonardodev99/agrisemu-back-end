@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.semulea.agrisemu.dto.UserDTO;
 import com.semulea.agrisemu.entties.User;
 import com.semulea.agrisemu.repositories.UserRepository;
+import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -21,7 +22,7 @@ public class UserService {
 	}
 	
 	public UserDTO findById(Long id) {
-		User result = userRepository.findById(id).get();
+		User result = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		return new UserDTO(result);
 	}
 	
