@@ -27,7 +27,7 @@ public class DepartmentService {
 	}
 	
 	public DepartmentDTO findById(Long id) {
-		Department department = departmentRepository.findById(id).get();
+		Department department = departmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		return new DepartmentDTO(department);
 	}
 	
@@ -41,21 +41,37 @@ public class DepartmentService {
 		obj.setNumberWorkers(departmentDTO.getNumberWorkers());
 		obj.setEmployer(employer);
 		
+		employer.incrementNumberDepartment();
+		employerRepository.save(employer);
+		
 		Department savedDepartment = departmentRepository.save(obj);
 		departmentDTO.setId(savedDepartment.getId());
-		
-		
 		return departmentDTO;
 	}
 	
 	public DepartmentDTO update(Long id, DepartmentDTO depart) {
-		Department existsDepartment = departmentRepository.findById(id).get();
-		Department savedDepartment = departmentRepository.save(existsDepartment);
-		return new DepartmentDTO(savedDepartment);	
+		Department existsDepartment = departmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		
+		if(existsDepartment.getName() != null) {
+			existsDepartment.setName(depart.getName());
+		}
+		if(existsDepartment.getNumberWorkers() != null) {
+			existsDepartment.setNumberWorkers(depart.getNumberWorkers());
+		}
+		
+		Department updateddDepartment = departmentRepository.save(existsDepartment);
+		return new DepartmentDTO(updateddDepartment);	
 	}
 	
 	public void delete(Long id) {
+		
+		Department existingDepartment = departmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		Employer employer = existingDepartment.getEmployer();
+		
+		employer.decrementNumberDepartment();
+		employerRepository.save(employer);
 		departmentRepository.deleteById(id);
+		
 	}
 
 }

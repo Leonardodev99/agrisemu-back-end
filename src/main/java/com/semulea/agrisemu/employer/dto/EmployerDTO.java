@@ -2,10 +2,10 @@ package com.semulea.agrisemu.employer.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 
-import com.semulea.agrisemu.entties.employers.Department;
 import com.semulea.agrisemu.entties.employers.Employer;
 
 import lombok.NoArgsConstructor;
@@ -18,11 +18,15 @@ public class EmployerDTO {
 	private Long nif;
 	private String address;
 	private String phone;
+	private Integer numberDepartment;
 	
-	private List<Department> departments = new ArrayList<>();
+	private List<DepartmentDTO> departments = new ArrayList<>();
 
 	public EmployerDTO(Employer entity) {
 		BeanUtils.copyProperties(entity, this);
+		this.departments = entity.getDepartments().stream()
+				.map(DepartmentDTO::new)
+				.collect(Collectors.toList());
 	}
 
 	public Long getId() {
@@ -65,8 +69,16 @@ public class EmployerDTO {
 		this.phone = phone;
 	}
 
-	public List<Department> getDepartments() {
+	public List<DepartmentDTO> getDepartments() {
 		return departments;
+	}
+
+	public Integer getNumberDepartment() {
+		return numberDepartment;
+	}
+
+	public void setNumberDepartment(Integer numberDepartment) {
+		this.numberDepartment = numberDepartment;
 	}
 
 

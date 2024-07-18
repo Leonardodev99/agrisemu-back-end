@@ -105,6 +105,22 @@ public class Employer implements Serializable {
 	public void setNumberDepartment(Integer numberDepartment) {
 		this.numberDepartment = numberDepartment;
 	}
+	
+	public void incrementNumberDepartment() {
+		if(this.departments == null) {
+			this.numberDepartment = 0;
+		}
+		this.numberDepartment++;
+	}
+	
+	public void decrementNumberDepartment() {
+		if( this.departments == null) {
+			this.numberDepartment = 0;
+		}else if(this.numberDepartment> 0) {
+			
+			this.numberDepartment--;
+		}
+	}
 
 	@Override
 	public int hashCode() {
