@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.beans.BeanUtils;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.semulea.agrisemu.employer.dto.EmployerDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,16 +36,23 @@ public class Employer implements Serializable {
 	private Long nif;
 	private String address;
 	private String phone;
+	private Integer numberDepartment;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "employer")
 	private List<Department> departments = new ArrayList<>();
 	
-	public Employer(Long id, String name, Long nif, String address, String phone) {
+	public Employer(Long id, String name, Long nif, String address, String phone,Integer numberDepartment) {
 		this.id = id;
 		this.name = name;
 		this.nif = nif;
 		this.address = address;
 		this.phone = phone;
+		this.numberDepartment = numberDepartment;
+	}
+	
+	public Employer(EmployerDTO employerDTO) {
+		BeanUtils.copyProperties(employerDTO, this);
 	}
 	
 	public List<Department> getDepartments() {
@@ -86,6 +98,13 @@ public class Employer implements Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	public Integer getNumberDepartment() {
+		return numberDepartment;
+	}
+
+	public void setNumberDepartment(Integer numberDepartment) {
+		this.numberDepartment = numberDepartment;
+	}
 
 	@Override
 	public int hashCode() {
@@ -104,6 +123,4 @@ public class Employer implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 	
-	
-
 }

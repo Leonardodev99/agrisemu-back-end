@@ -37,9 +37,17 @@ public class UserService {
 	}
 	
 	public UserDTO update(Long id, UserDTO userDTO) {
-		User existsUser = userRepository.findById(id).get();
+		User existsUser = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		if(userDTO.getEmail() != null) {
+			existsUser.setEmail(userDTO.getEmail());
+		}
+		if(userDTO.getPassword() !=null) {
+			existsUser.setPassword(userDTO.getPassword());
+		}
+		if(userDTO.getPhone() != null) {
+			existsUser.setPhone(userDTO.getPhone());
+		}
 		User updatedUser = userRepository.save(existsUser);
-		
 		return new UserDTO(updatedUser);
 	}
 	

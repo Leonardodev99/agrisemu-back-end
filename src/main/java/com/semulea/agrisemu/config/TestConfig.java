@@ -10,6 +10,10 @@ import org.springframework.context.annotation.Profile;
 import com.semulea.agrisemu.entties.User;
 import com.semulea.agrisemu.entties.UserAdmin;
 import com.semulea.agrisemu.entties.UserWorker;
+import com.semulea.agrisemu.entties.employers.Department;
+import com.semulea.agrisemu.entties.employers.Employer;
+import com.semulea.agrisemu.repositories.DepartmentRepository;
+import com.semulea.agrisemu.repositories.EmployerRepository;
 import com.semulea.agrisemu.repositories.UserAdminRepository;
 import com.semulea.agrisemu.repositories.UserRepository;
 import com.semulea.agrisemu.repositories.UserWorkerRepository;
@@ -26,6 +30,12 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private EmployerRepository employerRepository;
+	
+	@Autowired
+	private DepartmentRepository departmentRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -43,6 +53,17 @@ public class TestConfig implements CommandLineRunner {
 		User b2 = new User(null, "dani@gmail.com", "999 978 222", "123456");
 		userRepository.saveAll(Arrays.asList(b1,b2));
 		
+		Employer q1 = new Employer(null, "DUINOR", 333456L, "Rangel rua da brigada", "999934", 2);
+		Employer q2 = new Employer(null, "Semulea", 332456L, "São Paulo avenida comandante valodia", "999834", 1);
+		
+		Department d1 = new Department(null, "RH", 4, q1);
+		Department d2 = new Department(null, "Finanças", 10, q1);
+		Department d3 = new Department(null, "Finanças", 10, q2);
+		
+		employerRepository.saveAll(Arrays.asList(q1,q2));
+		departmentRepository.saveAll(Arrays.asList(d1,d2,d3));
+		
+	
 	}
 
 }
