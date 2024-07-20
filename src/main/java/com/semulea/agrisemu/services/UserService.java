@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.semulea.agrisemu.dto.UserDTO;
 import com.semulea.agrisemu.entties.User;
 import com.semulea.agrisemu.repositories.UserRepository;
+import com.semulea.agrisemu.resources.exceptions.EmailAlreadyExistsException;
+import com.semulea.agrisemu.resources.exceptions.PhoneAlreadyExistsException;
 import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -27,12 +29,22 @@ public class UserService {
 	}
 	
 	public UserDTO insert(UserDTO userDTO) {
+		
+		if(userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+			throw new EmailAlreadyExistsException("Email already exists");
+		}
+		if(userRepository.findByPhone(userDTO.getPhone()).isPresent()) {
+			throw new PhoneAlreadyExistsException("Phone already exists");
+		}
 		User user = new User(userDTO);
 		User savedUser = userRepository.save(user);
 		return new UserDTO(savedUser);
 	}
 	
 	public void delete(Long id) {
+		if(!userRepository.existsById(id)) {
+			throw new ResourceNotFoundException(id);
+		}
 		userRepository.deleteById(id);
 	}
 	

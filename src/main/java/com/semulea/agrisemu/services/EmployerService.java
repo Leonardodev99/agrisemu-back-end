@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.semulea.agrisemu.employer.dto.EmployerDTO;
 import com.semulea.agrisemu.entties.employers.Employer;
 import com.semulea.agrisemu.repositories.EmployerRepository;
+import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class EmployerService {
@@ -22,7 +23,7 @@ public class EmployerService {
 	}
 	
 	public EmployerDTO findById(Long id) {
-		Employer employer = employerRepository.findById(id).get();
+		Employer employer = employerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		
 		return new EmployerDTO(employer);
 	}
@@ -34,7 +35,7 @@ public class EmployerService {
 	}
 	
 	public EmployerDTO update(Long id, EmployerDTO employer) {
-		Employer existsEmployer = employerRepository.findById(id).get();
+		Employer existsEmployer = employerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		Employer updatedEmployer = employerRepository.save(existsEmployer);
 		
 		return new EmployerDTO(updatedEmployer);
