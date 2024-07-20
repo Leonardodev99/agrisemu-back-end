@@ -55,7 +55,7 @@ public class UserAdminResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<UserAdminDTO> update(@PathVariable Long id,@Valid @RequestBody UserAdminDTO obj) {
+	public ResponseEntity<UserAdminDTO> update(@PathVariable Long id, @RequestBody UserAdminDTO obj) {
 		obj = adminService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}

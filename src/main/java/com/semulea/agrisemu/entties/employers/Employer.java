@@ -24,7 +24,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "employers", uniqueConstraints = {
 		@UniqueConstraint(columnNames = "name"),
 		@UniqueConstraint(columnNames = "nif"),
-		@UniqueConstraint(columnNames = "phone")
+		@UniqueConstraint(columnNames = "phone"),
+		@UniqueConstraint(columnNames = "email")
 })
 public class Employer implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -36,18 +37,20 @@ public class Employer implements Serializable {
 	private Long nif;
 	private String address;
 	private String phone;
+	private String email;
 	private Integer numberDepartment;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "employer")
 	private List<Department> departments = new ArrayList<>();
 	
-	public Employer(Long id, String name, Long nif, String address, String phone,Integer numberDepartment) {
+	public Employer(Long id, String name, Long nif, String address, String phone,String email,Integer numberDepartment) {
 		this.id = id;
 		this.name = name;
 		this.nif = nif;
 		this.address = address;
 		this.phone = phone;
+		this.email = email;
 		this.numberDepartment = numberDepartment;
 	}
 	
@@ -98,6 +101,15 @@ public class Employer implements Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 	public Integer getNumberDepartment() {
 		return numberDepartment;
 	}
@@ -138,5 +150,5 @@ public class Employer implements Serializable {
 		Employer other = (Employer) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
 }

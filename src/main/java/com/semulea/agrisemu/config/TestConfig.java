@@ -53,8 +53,8 @@ public class TestConfig implements CommandLineRunner {
 		User b2 = new User(null, "dani@gmail.com", "999 978 222", "123456");
 		userRepository.saveAll(Arrays.asList(b1,b2));
 		
-		Employer q1 = new Employer(null, "DUINOR", 333456L, "Rangel rua da brigada", "999934", 2);
-		Employer q2 = new Employer(null, "Semulea", 332456L, "São Paulo avenida comandante valodia", "999834", 1);
+		Employer q1 = new Employer(null, "DUINOR", 333456L, "Rangel rua da brigada", "999934","duinor@gmail.com", 2);
+		Employer q2 = new Employer(null, "Semulea", 332456L, "São Paulo avenida comandante valodia", "999834","semulea@gmail.com", 1);
 		
 		Department d1 = new Department(null, "RH", 4, q1);
 		Department d2 = new Department(null, "Finanças", 10, q1);

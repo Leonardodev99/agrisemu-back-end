@@ -18,6 +18,7 @@ public class EmployerDTO {
 	private Long nif;
 	private String address;
 	private String phone;
+	private String email;
 	private Integer numberDepartment;
 	
 	private List<DepartmentDTO> departments = new ArrayList<>();
@@ -79,6 +80,14 @@ public class EmployerDTO {
 
 	public void setNumberDepartment(Integer numberDepartment) {
 		this.numberDepartment = numberDepartment;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 

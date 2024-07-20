@@ -55,16 +55,20 @@ public class UserWorkerService {
 	public UserWorkerDTO update(Long id, UserWorkerDTO userDTO) {
 		UserWorker existingUser = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		
-		if (userDTO.getUsername() != null) {
+		if (userDTO.getUsername() != null && !userDTO.getUsername().isEmpty()) {
             existingUser.setUsername(userDTO.getUsername());
         }
-        if (userDTO.getEmail() != null) {
-            existingUser.setEmail(userDTO.getEmail());
+        if (userDTO.getEmail() != null && !userDTO.getEmail().isEmpty()) {
+        	
+        	if(repository.findByEmail(userDTO.getEmail()).isPresent()) {
+				throw new EmailAlreadyExistsException("Email already exists!");
+			}
+        	existingUser.setEmail(userDTO.getEmail());
         }
-        if (userDTO.getPassword() != null) {
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
             existingUser.setPassword(userDTO.getPassword());
         }
-		
+     
 		UserWorker updatedUser = repository.save(existingUser);
 		
 		return new UserWorkerDTO(updatedUser);

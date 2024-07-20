@@ -50,15 +50,27 @@ public class UserService {
 	
 	public UserDTO update(Long id, UserDTO userDTO) {
 		User existsUser = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-		if(userDTO.getEmail() != null) {
+		if(userDTO.getEmail() != null && !userDTO.getEmail().isEmpty()) {
+			
+			if(userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+				throw new EmailAlreadyExistsException("Email already exists!");
+			}
 			existsUser.setEmail(userDTO.getEmail());
 		}
-		if(userDTO.getPassword() !=null) {
-			existsUser.setPassword(userDTO.getPassword());
-		}
-		if(userDTO.getPhone() != null) {
+		
+		if(userDTO.getPhone() != null && userDTO.getPhone().isEmpty()) {
+			
+			if(userRepository.findByPhone(userDTO.getPhone()).isPresent()) {
+				throw new PhoneAlreadyExistsException("Phone already exists!");
+			}
+			
 			existsUser.setPhone(userDTO.getPhone());
 		}
+		
+		if(userDTO.getPassword() !=null && userDTO.getPassword().isEmpty()) {
+			existsUser.setPassword(userDTO.getPassword());
+		}
+		
 		User updatedUser = userRepository.save(existsUser);
 		return new UserDTO(updatedUser);
 	}

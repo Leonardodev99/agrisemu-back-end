@@ -36,6 +36,7 @@ public class UserAdminService {
 		if(adminRepository.findByPhone(userAdminDTO.getPhone()).isPresent()) {
 			throw new PhoneAlreadyExistsException("Phone already exists");
 		}
+		
 		UserAdmin obj = new UserAdmin(userAdminDTO);
 		UserAdmin savedUser = adminRepository.save(obj);
 		return new UserAdminDTO(savedUser);
@@ -52,26 +53,27 @@ public class UserAdminService {
 	public UserAdminDTO update(Long id, UserAdminDTO userAdminDTO) {
 		UserAdmin existingUser = adminRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		
-		if (userAdminDTO.getName() != null) {
-            existingUser.setName(userAdminDTO.getName());;
+		if (userAdminDTO.getName() != null && !userAdminDTO.getName().isEmpty()) {
+            existingUser.setName(userAdminDTO.getName());
         }
-        if (userAdminDTO.getEmail() != null) {
-            existingUser.setEmail(userAdminDTO.getEmail());
+        if (userAdminDTO.getEmail() != null && !userAdminDTO.getEmail().isEmpty()) {
+            
+        	if(adminRepository.findByEmail(userAdminDTO.getEmail()).isPresent()) {
+    			throw new EmailAlreadyExistsException("Email already exists");
+    		}
+        	existingUser.setEmail(userAdminDTO.getEmail());
         }
-        if (userAdminDTO.getPhone() != null) {
-            existingUser.setPhone(userAdminDTO.getPhone());;
+        if (userAdminDTO.getPhone() != null && !userAdminDTO.getPhone().isEmpty()) {
+        	if(adminRepository.findByPhone(userAdminDTO.getPhone()).isPresent()) {
+    			throw new PhoneAlreadyExistsException("Phone already exists");
+    		}
+    		
+        	existingUser.setPhone(userAdminDTO.getPhone());
         }
-        if(userAdminDTO.getPassword() != null) {
+        if(userAdminDTO.getPassword() != null && userAdminDTO.getPassword().isEmpty()) {
         	existingUser.setPassword(userAdminDTO.getPassword());
         }
         
-        if(adminRepository.findByEmail(userAdminDTO.getEmail()).isPresent()) {
-			throw new EmailAlreadyExistsException("Email already exists");
-		}
-        if(adminRepository.findByPhone(userAdminDTO.getPhone()).isPresent()) {
-			throw new PhoneAlreadyExistsException("Phone already exists");
-		}
-		
 		UserAdmin updatedUser = adminRepository.save(existingUser);
 		return new UserAdminDTO(updatedUser);
 	}
