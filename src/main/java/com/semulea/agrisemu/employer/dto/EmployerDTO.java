@@ -7,18 +7,40 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 
 import com.semulea.agrisemu.entties.employers.Employer;
+import com.semulea.agrisemu.validation.Nif;
+import com.semulea.agrisemu.validation.PhoneFormat;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class EmployerDTO {
 	
 	private Long id;
+	
+	@NotBlank(message = "Name is mandatory")
+	@Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
 	private String name;
-	private Long nif;
+	
+	@NotBlank(message = "NF is mandatory")
+	@Size(max = 10, message = "NF must have 10 digits in number")
+	@Nif
+	private String nif;
+	
+	@NotBlank(message = "Address is mandatory")
+	@Size(min = 3, max = 400, message = "Address must be between 3 and 400 characters")
 	private String address;
+	
+	@NotBlank(message = "Phone is mandatoy")
+	@PhoneFormat
 	private String phone;
+	
+	@NotBlank(message = "Email is mandatory")
+	@Email(message = "Email should be valid")
 	private String email;
+	
 	private Integer numberDepartment;
 	
 	private List<DepartmentDTO> departments = new ArrayList<>();
@@ -46,11 +68,11 @@ public class EmployerDTO {
 		this.name = name;
 	}
 
-	public Long getNif() {
+	public String getNif() {
 		return nif;
 	}
 
-	public void setNif(Long nif) {
+	public void setNif(String nif) {
 		this.nif = nif;
 	}
 

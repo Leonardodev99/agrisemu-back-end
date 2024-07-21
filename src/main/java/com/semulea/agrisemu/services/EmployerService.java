@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import com.semulea.agrisemu.employer.dto.EmployerDTO;
 import com.semulea.agrisemu.entties.employers.Employer;
 import com.semulea.agrisemu.repositories.EmployerRepository;
+import com.semulea.agrisemu.resources.exceptions.EmailAlreadyExistsException;
+import com.semulea.agrisemu.resources.exceptions.PhoneAlreadyExistsException;
+import com.semulea.agrisemu.services.exceptions.NameAlreadyExistsException;
+import com.semulea.agrisemu.services.exceptions.NifAlreadyExistsException;
 import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -29,6 +33,20 @@ public class EmployerService {
 	}
 	
 	public EmployerDTO insert(EmployerDTO employer) {
+		
+		if(employerRepository.findByName(employer.getName()).isPresent()) {
+			throw new NameAlreadyExistsException("Name already exists");
+		}
+		
+		if(employerRepository.findByEmail(employer.getEmail()).isPresent()) {
+			throw new EmailAlreadyExistsException("Email already exists");
+		}
+		if(employerRepository.findByPhone(employer.getPhone()).isPresent()) {
+			throw new PhoneAlreadyExistsException("Phone already exists");
+		}
+		if(employerRepository.findByNif(employer.getNif()).isPresent()) {
+			throw new NifAlreadyExistsException("NIF already exists");
+		}
 		Employer obj = new Employer(employer);
 		Employer savedEmployer = employerRepository.save(obj);
 		return new EmployerDTO(savedEmployer);
@@ -36,6 +54,37 @@ public class EmployerService {
 	
 	public EmployerDTO update(Long id, EmployerDTO employer) {
 		Employer existsEmployer = employerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		
+		if(employer.getName() != null && !employer.getName().isEmpty()) {
+			if(employerRepository.findByName(employer.getName()).isPresent()) {
+				throw new NameAlreadyExistsException("Name already exists");
+			}
+			existsEmployer.setName(employer.getName());
+		}
+		if(employer.getEmail() != null && !employer.getEmail().isEmpty()) {
+			if(employerRepository.findByEmail(employer.getEmail()).isPresent()) {
+				throw new EmailAlreadyExistsException("Email already exists");
+			}
+			existsEmployer.setEmail(employer.getEmail());
+		}
+		if(employer.getPhone() != null && !employer.getPhone().isEmpty()) {
+			if(employerRepository.findByPhone(employer.getPhone()).isPresent()) {
+				throw new PhoneAlreadyExistsException("Phone already exists");
+			}
+			existsEmployer.setPhone(employer.getPhone());
+		}
+		if(employer.getNif() != null && !employer.getNif().isEmpty()) {
+			if(employerRepository.findByNif(employer.getNif()).isPresent()) {
+				throw new NifAlreadyExistsException("NIF already exists");
+			}
+			existsEmployer.setNif(employer.getNif());
+		} 
+		if(employer.getAddress() != null && !employer.getAddress().isEmpty()) {
+			existsEmployer.setAddress(employer.getAddress());
+		}
+		if(employer.getNumberDepartment() != null) {
+			existsEmployer.setNumberDepartment(employer.getNumberDepartment());
+		}
 		Employer updatedEmployer = employerRepository.save(existsEmployer);
 		
 		return new EmployerDTO(updatedEmployer);

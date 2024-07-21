@@ -9,6 +9,8 @@ import org.springframework.beans.BeanUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semulea.agrisemu.employer.dto.EmployerDTO;
+import com.semulea.agrisemu.validation.Nif;
+import com.semulea.agrisemu.validation.PhoneFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +19,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -33,18 +38,35 @@ public class Employer implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotBlank(message = "Name is mandatory")
+	@Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
 	private String name;
-	private Long nif;
+	
+	@NotBlank(message = "NF is mandatory")
+	@Size(max = 10, message = "NF must have 10 digits in number")
+	@Nif
+	private String nif;
+	
+	@NotBlank(message = "Address is mandatory")
+	@Size(min = 3, max = 400, message = "Address must be between 3 and 400 characters")
 	private String address;
+	
+	@NotBlank(message = "Phone is mandatoy")
+	@PhoneFormat
 	private String phone;
+	
+	@NotBlank(message = "Email is mandatory")
+	@Email(message = "Email should be valid")
 	private String email;
+	
 	private Integer numberDepartment;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "employer")
 	private List<Department> departments = new ArrayList<>();
 	
-	public Employer(Long id, String name, Long nif, String address, String phone,String email,Integer numberDepartment) {
+	public Employer(Long id, String name, String nif, String address, String phone,String email,Integer numberDepartment) {
 		this.id = id;
 		this.name = name;
 		this.nif = nif;
@@ -78,11 +100,11 @@ public class Employer implements Serializable {
 		this.name = name;
 	}
 
-	public Long getNif() {
+	public String getNif() {
 		return nif;
 	}
 
-	public void setNif(Long nif) {
+	public void setNif(String nif) {
 		this.nif = nif;
 	}
 

@@ -1,5 +1,6 @@
 package com.semulea.agrisemu.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.semulea.agrisemu.employer.dto.EmployerDTO;
 import com.semulea.agrisemu.services.EmployerService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/employers")
@@ -37,9 +41,11 @@ public class EmployerResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<EmployerDTO> insert(@RequestBody EmployerDTO employer) {
+	public ResponseEntity<EmployerDTO> insert(@Valid @RequestBody EmployerDTO employer) {
 		employer = employerService.insert(employer);
-		return ResponseEntity.ok().body(employer);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(employer.getId()).toUri();
+		return ResponseEntity.created(uri).body(employer);
 	}
 	
 	@PutMapping(value = "/{id}")
