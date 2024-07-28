@@ -43,11 +43,11 @@ public class EmployerDTO {
 	
 	private Integer numberDepartment;
 	
-	private List<DepartmentDTO> departments = new ArrayList<>();
+	private List<DepartmentDTO> departmentsDTO = new ArrayList<>();
 
 	public EmployerDTO(Employer entity) {
 		BeanUtils.copyProperties(entity, this);
-		this.departments = entity.getDepartments().stream()
+		this.departmentsDTO = entity.getDepartments().stream()
 				.map(DepartmentDTO::new)
 				.collect(Collectors.toList());
 	}
@@ -93,7 +93,7 @@ public class EmployerDTO {
 	}
 
 	public List<DepartmentDTO> getDepartments() {
-		return departments;
+		return departmentsDTO;
 	}
 
 	public Integer getNumberDepartment() {

@@ -26,47 +26,45 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Entity
-@Table(name = "employers", uniqueConstraints = {
-		@UniqueConstraint(columnNames = "name"),
-		@UniqueConstraint(columnNames = "nif"),
-		@UniqueConstraint(columnNames = "phone"),
-		@UniqueConstraint(columnNames = "email")
-})
+@Table(name = "employers", uniqueConstraints = { @UniqueConstraint(columnNames = "name"),
+		@UniqueConstraint(columnNames = "nif"), @UniqueConstraint(columnNames = "phone"),
+		@UniqueConstraint(columnNames = "email") })
 public class Employer implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank(message = "Name is mandatory")
 	@Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
 	private String name;
-	
+
 	@NotBlank(message = "NF is mandatory")
 	@Size(max = 10, message = "NF must have 10 digits in number")
 	@Nif
 	private String nif;
-	
+
 	@NotBlank(message = "Address is mandatory")
 	@Size(min = 3, max = 400, message = "Address must be between 3 and 400 characters")
 	private String address;
-	
+
 	@NotBlank(message = "Phone is mandatoy")
 	@PhoneFormat
 	private String phone;
-	
+
 	@NotBlank(message = "Email is mandatory")
 	@Email(message = "Email should be valid")
 	private String email;
-	
+
 	private Integer numberDepartment;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "employer")
 	private List<Department> departments = new ArrayList<>();
-	
-	public Employer(Long id, String name, String nif, String address, String phone,String email,Integer numberDepartment) {
+
+	public Employer(Long id, String name, String nif, String address, String phone, String email,
+			Integer numberDepartment) {
 		this.id = id;
 		this.name = name;
 		this.nif = nif;
@@ -75,14 +73,14 @@ public class Employer implements Serializable {
 		this.email = email;
 		this.numberDepartment = numberDepartment;
 	}
-	
+
 	public Employer(EmployerDTO employerDTO) {
 		BeanUtils.copyProperties(employerDTO, this);
 	}
+
 	
-	public List<Department> getDepartments() {
-		return departments;
-	}
+	 public List<Department> getDepartments() { return departments; }
+	 
 
 	public Long getId() {
 		return id;
@@ -131,7 +129,7 @@ public class Employer implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public Integer getNumberDepartment() {
 		return numberDepartment;
 	}
@@ -139,22 +137,17 @@ public class Employer implements Serializable {
 	public void setNumberDepartment(Integer numberDepartment) {
 		this.numberDepartment = numberDepartment;
 	}
+
 	
-	public void incrementNumberDepartment() {
-		if(this.departments == null) {
-			this.numberDepartment = 0;
-		}
-		this.numberDepartment++;
-	}
-	
-	public void decrementNumberDepartment() {
-		if( this.departments == null) {
-			this.numberDepartment = 0;
-		}else if(this.numberDepartment> 0) {
-			
-			this.numberDepartment--;
-		}
-	}
+	public void incrementNumberDepartment() { if(this.departments == null) {
+	   this.numberDepartment = 0; } this.numberDepartment++; }
+	 
+    public void decrementNumberDepartment() { if( this.departments == null) {
+	  this.numberDepartment = 0; }else if(this.numberDepartment> 0) {
+	  
+	  this.numberDepartment--; }
+    }
+	 
 
 	@Override
 	public int hashCode() {

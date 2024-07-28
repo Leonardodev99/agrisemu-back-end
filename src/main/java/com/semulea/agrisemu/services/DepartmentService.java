@@ -35,7 +35,7 @@ public class DepartmentService {
 		
 		Employer employer = employerRepository.findById(departmentDTO.getEmployerId())
 				.orElseThrow(() -> new ResourceNotFoundException(" Employer not found"));
-		
+
 		Department obj = new Department();
 		obj.setName(departmentDTO.getName());
 		obj.setNumberWorkers(departmentDTO.getNumberWorkers());
@@ -55,7 +55,7 @@ public class DepartmentService {
 		if(existsDepartment.getName() != null) {
 			existsDepartment.setName(depart.getName());
 		}
-		if(existsDepartment.getNumberWorkers() != null) {
+		if(existsDepartment.getNumberWorkers() == 0) {
 			existsDepartment.setNumberWorkers(depart.getNumberWorkers());
 		}
 		

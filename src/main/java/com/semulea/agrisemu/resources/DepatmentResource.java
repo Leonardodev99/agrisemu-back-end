@@ -1,5 +1,6 @@
 package com.semulea.agrisemu.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.semulea.agrisemu.employer.dto.DepartmentDTO;
 import com.semulea.agrisemu.services.DepartmentService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/departments")
@@ -36,9 +40,11 @@ public class DepatmentResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<DepartmentDTO> insert(@RequestBody DepartmentDTO departmentDTO) {
+	public ResponseEntity<DepartmentDTO> insert(@Valid @RequestBody DepartmentDTO departmentDTO) {
 		departmentDTO = departmentService.insert(departmentDTO);
-		return ResponseEntity.ok().body(departmentDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(departmentDTO.getId()).toUri();
+		return ResponseEntity.created(uri).body(departmentDTO);
 	}
 	
 	@PutMapping(value = "/{id}")

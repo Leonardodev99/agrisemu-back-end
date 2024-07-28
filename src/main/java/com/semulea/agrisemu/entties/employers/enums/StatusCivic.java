@@ -1,14 +1,15 @@
 package com.semulea.agrisemu.entties.employers.enums;
 
-public enum WorkerLevel {
+public enum StatusCivic {
 	
-	JUNIOR(1),
-	MID_LEVEL(2),
-	SENIOR(3);
+	SINGLE(1),
+	MERRIED(2),
+	DIVORCED(3),
+	WIDOWER(4);
 	
 	private int code;
 	
-	private WorkerLevel(int code) {
+	private StatusCivic(int code) {
 		this.code = code;
 	}
 	
@@ -16,14 +17,15 @@ public enum WorkerLevel {
 		return code;
 	}
 	
-	public static WorkerLevel valueOf(int code) {
-		for(WorkerLevel value : WorkerLevel.values()) {
+	public static StatusCivic valueOf( int code) {
+		for(StatusCivic value : StatusCivic.values()) {
 			if(value.getCode() == code) {
 				return value;
 			}
 		}
 		throw new IllegalArgumentException("Invalid WorkerLevel code");
 	}
+
 	
 
 }

@@ -1,14 +1,13 @@
 package com.semulea.agrisemu.entties.employers.enums;
 
-public enum WorkerLevel {
+public enum Sex {
 	
-	JUNIOR(1),
-	MID_LEVEL(2),
-	SENIOR(3);
+	M(1),
+	F(2);
 	
 	private int code;
 	
-	private WorkerLevel(int code) {
+	private Sex(int code) {
 		this.code = code;
 	}
 	
@@ -16,14 +15,13 @@ public enum WorkerLevel {
 		return code;
 	}
 	
-	public static WorkerLevel valueOf(int code) {
-		for(WorkerLevel value : WorkerLevel.values()) {
+	public static Sex valueOf( int code) {
+		for(Sex value : Sex.values()) {
 			if(value.getCode() == code) {
 				return value;
 			}
 		}
 		throw new IllegalArgumentException("Invalid WorkerLevel code");
 	}
-	
 
 }
