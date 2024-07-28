@@ -9,6 +9,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.semulea.agrisemu.services.exceptions.InvalidDateOfBirthException;
+import com.semulea.agrisemu.services.exceptions.NameEmployerAlreadyExistsException;
+import com.semulea.agrisemu.services.exceptions.NifAlreadyExistsException;
 import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,7 +48,7 @@ public class ResourceExceptionHandler {
 	 
 	 @ExceptionHandler(EmailAlreadyExistsException.class)
 	 public ResponseEntity<StandardError> emailAlreadyExistsException(EmailAlreadyExistsException e,HttpServletRequest request) {
-		 String error =  "User not be created";
+		 String error =  "Not be created";
 	      	HttpStatus status = HttpStatus.BAD_REQUEST;
 	      	StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
 	      	return ResponseEntity.status(status).body(err);
@@ -53,7 +56,28 @@ public class ResourceExceptionHandler {
 	 
 	 @ExceptionHandler(PhoneAlreadyExistsException.class)
 	 public ResponseEntity<StandardError> phoneAlreadyExistsException(PhoneAlreadyExistsException e,HttpServletRequest request) {
-		 String error =  "User not be created";
+		 String error =  "Not be created";
+	      	HttpStatus status = HttpStatus.BAD_REQUEST;
+	      	StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+	      	return ResponseEntity.status(status).body(err);
+	 }
+	 @ExceptionHandler(InvalidDateOfBirthException.class)
+	 public ResponseEntity<StandardError> InvalidDateOfBirthException(InvalidDateOfBirthException e,HttpServletRequest request) {
+		 String error =  "Invalid date not be created";
+	      	HttpStatus status = HttpStatus.BAD_REQUEST;
+	      	StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+	      	return ResponseEntity.status(status).body(err);
+	 }
+	 @ExceptionHandler(NameEmployerAlreadyExistsException.class)
+	 public ResponseEntity<StandardError> NameEmployerAlreadyExistsException(NameEmployerAlreadyExistsException e,HttpServletRequest request) {
+		 String error =  "Employer not be created";
+	      	HttpStatus status = HttpStatus.BAD_REQUEST;
+	      	StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+	      	return ResponseEntity.status(status).body(err);
+	 }
+	 @ExceptionHandler(NifAlreadyExistsException.class)
+	 public ResponseEntity<StandardError> NifAlreadyExistsException(NifAlreadyExistsException e,HttpServletRequest request) {
+		 String error =  "Employer not be created";
 	      	HttpStatus status = HttpStatus.BAD_REQUEST;
 	      	StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
 	      	return ResponseEntity.status(status).body(err);

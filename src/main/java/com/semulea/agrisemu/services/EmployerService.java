@@ -10,7 +10,7 @@ import com.semulea.agrisemu.entties.employers.Employer;
 import com.semulea.agrisemu.repositories.EmployerRepository;
 import com.semulea.agrisemu.resources.exceptions.EmailAlreadyExistsException;
 import com.semulea.agrisemu.resources.exceptions.PhoneAlreadyExistsException;
-import com.semulea.agrisemu.services.exceptions.NameAlreadyExistsException;
+import com.semulea.agrisemu.services.exceptions.NameEmployerAlreadyExistsException;
 import com.semulea.agrisemu.services.exceptions.NifAlreadyExistsException;
 import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
 
@@ -35,7 +35,7 @@ public class EmployerService {
 	public EmployerDTO insert(EmployerDTO employer) {
 		
 		if(employerRepository.findByName(employer.getName()).isPresent()) {
-			throw new NameAlreadyExistsException("Name already exists");
+			throw new NameEmployerAlreadyExistsException("Name already exists");
 		}
 		
 		if(employerRepository.findByEmail(employer.getEmail()).isPresent()) {
@@ -57,7 +57,7 @@ public class EmployerService {
 		
 		if(employer.getName() != null && !employer.getName().isEmpty()) {
 			if(employerRepository.findByName(employer.getName()).isPresent()) {
-				throw new NameAlreadyExistsException("Name already exists");
+				throw new NameEmployerAlreadyExistsException("Name already exists");
 			}
 			existsEmployer.setName(employer.getName());
 		}
@@ -91,6 +91,9 @@ public class EmployerService {
 	}
 	
 	public void delete(Long id) {
+		if(!employerRepository.existsById(id)) {
+			throw new ResourceNotFoundException(id);
+		}
 		employerRepository.deleteById(id);
 	}
 

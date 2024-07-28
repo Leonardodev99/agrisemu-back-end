@@ -2,6 +2,7 @@ package com.semulea.agrisemu.services;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -15,6 +16,8 @@ import com.semulea.agrisemu.repositories.WorkerRepository;
 import com.semulea.agrisemu.resources.exceptions.EmailAlreadyExistsException;
 import com.semulea.agrisemu.resources.exceptions.PhoneAlreadyExistsException;
 import com.semulea.agrisemu.services.exceptions.BiAlreadyExistsException;
+import com.semulea.agrisemu.services.exceptions.InvalidDateOfBirthException;
+import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class WorkerService {
@@ -28,7 +31,7 @@ public class WorkerService {
 	}
 
 	public WorkerDTO findById(Long id) {
-		Worker worker = workerRepository.findById(id).get();
+		Worker worker = workerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		return new WorkerDTO(worker);
 	}
 
@@ -37,6 +40,26 @@ public class WorkerService {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate localDate = LocalDate.parse(workerDTO.getDateOfBirth(), formatter);
 		Instant dateOfBirth = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+		
+		/*if(!dateOfBirth.isBefore(Instant.now()) ) {
+			throw new InvalidDateOfBirthException("Date of birth cannot be today or in the future!");
+		}*/
+		
+		LocalDate today = LocalDate.now();
+		Period period = Period.between(localDate, today);
+		if(period.getYears() < 18) {
+			throw new InvalidDateOfBirthException("Worker must be 18 years or older!");
+		}
+		if (workerRepository.findByEmail(workerDTO.getEmail()).isPresent()) {
+			throw new BiAlreadyExistsException("BI already exists!");
+		}
+		if (workerRepository.findByPhone(workerDTO.getPhone()).isPresent()) {
+			throw new PhoneAlreadyExistsException("Phone already exists!");
+		}
+		if (workerRepository.findByEmail(workerDTO.getEmail()).isPresent()) {
+			throw new EmailAlreadyExistsException("Email already exists!");
+		}
+		
 		
 		Worker worker = new Worker(workerDTO);
 		worker.setDateOfBirth(dateOfBirth);
@@ -76,13 +99,6 @@ public class WorkerService {
 		if (workerDTO.getAddress() != null && !workerDTO.getAddress().isEmpty()) {
 			existingWorker.setAddress(workerDTO.getAddress());
 		}
-		/*if (workerDTO.getDateOfBirth() != null && !workerDTO.getDateOfBirth().isEmpty()) {
-
-			if (workerRepository.findByDateOfBirth(workerDTO.getDateOfBirth()).isPresent()) {
-				throw new DateOfBirthAlreadyExistsException("Date already exists!");
-			}
-			existingWorker.setEmail(workerDTO.getEmail());
-		}*/
 		
 		if (workerDTO.getNationality() != null && !workerDTO.getNationality().isEmpty()) {
 			existingWorker.setNationality(workerDTO.getNationality());

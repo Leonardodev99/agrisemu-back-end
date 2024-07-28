@@ -1,9 +1,9 @@
 package com.semulea.agrisemu.services.exceptions;
 
-public class NameAlreadyExistsException extends RuntimeException {
+public class InvalidDateOfBirthException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
-	public NameAlreadyExistsException(String message) {
+	public InvalidDateOfBirthException(String message) {
 		super(message);
 	}
 
