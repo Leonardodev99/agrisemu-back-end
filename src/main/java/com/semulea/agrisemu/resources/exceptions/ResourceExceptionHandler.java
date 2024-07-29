@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.semulea.agrisemu.services.exceptions.DepartmentAlreadyExistsException;
 import com.semulea.agrisemu.services.exceptions.InvalidDateOfBirthException;
 import com.semulea.agrisemu.services.exceptions.NameEmployerAlreadyExistsException;
 import com.semulea.agrisemu.services.exceptions.NifAlreadyExistsException;
@@ -78,6 +79,13 @@ public class ResourceExceptionHandler {
 	 @ExceptionHandler(NifAlreadyExistsException.class)
 	 public ResponseEntity<StandardError> NifAlreadyExistsException(NifAlreadyExistsException e,HttpServletRequest request) {
 		 String error =  "Employer not be created";
+	      	HttpStatus status = HttpStatus.BAD_REQUEST;
+	      	StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+	      	return ResponseEntity.status(status).body(err);
+	 }
+	 @ExceptionHandler(DepartmentAlreadyExistsException.class)
+	 public ResponseEntity<StandardError> DepartmentAlreadyExistsException(DepartmentAlreadyExistsException e,HttpServletRequest request) {
+		 String error =  "Department not be created";
 	      	HttpStatus status = HttpStatus.BAD_REQUEST;
 	      	StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
 	      	return ResponseEntity.status(status).body(err);

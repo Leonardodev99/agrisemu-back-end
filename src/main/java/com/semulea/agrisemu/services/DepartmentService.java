@@ -10,6 +10,7 @@ import com.semulea.agrisemu.entties.employers.Department;
 import com.semulea.agrisemu.entties.employers.Employer;
 import com.semulea.agrisemu.repositories.DepartmentRepository;
 import com.semulea.agrisemu.repositories.EmployerRepository;
+import com.semulea.agrisemu.services.exceptions.DepartmentAlreadyExistsException;
 import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -36,6 +37,13 @@ public class DepartmentService {
 		Employer employer = employerRepository.findById(departmentDTO.getEmployerId())
 				.orElseThrow(() -> new ResourceNotFoundException(" Employer not found"));
 
+		List<Department> existingDepartments = employer.getDepartments();
+		for(Department department : existingDepartments) {
+			if(department.getName().equalsIgnoreCase(departmentDTO.getName())) {
+				throw new DepartmentAlreadyExistsException("Department "+ departmentDTO.getName() + " already exists for employer " +employer.getName());
+			}
+		}
+		
 		Department obj = new Department();
 		obj.setName(departmentDTO.getName());
 		obj.setNumberWorkers(departmentDTO.getNumberWorkers());
