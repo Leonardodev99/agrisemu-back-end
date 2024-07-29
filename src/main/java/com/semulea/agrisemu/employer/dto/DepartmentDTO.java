@@ -1,8 +1,8 @@
 package com.semulea.agrisemu.employer.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 
@@ -34,7 +34,7 @@ public class DepartmentDTO implements Serializable {
 	
 	private EmployerDTO employerDTO;
 	
-	private List<WorkerDTO> workersDTO = new ArrayList<>();
+	private Set<WorkerDTO> workersDTO = new HashSet<>();
 	
 	
 	public DepartmentDTO(Long id,String name,Integer numberWorkers, Long employerId, EmployerDTO employerDTO) {

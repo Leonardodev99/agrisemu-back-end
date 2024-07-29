@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semulea.agrisemu.employer.dto.DepartmentDTO;
 
 import jakarta.persistence.Entity;
@@ -13,9 +14,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -46,7 +47,8 @@ public class Department implements Serializable {
 	@JoinColumn(name = "employer_id")
 	private Employer employer;
 	
-	@Transient
+	@JsonIgnore
+	@ManyToMany(mappedBy = "departments")
 	private Set<Worker> workers = new HashSet<>();
 	
 	public Department(Long id, String name,Integer numberWorkers, Employer employer) {

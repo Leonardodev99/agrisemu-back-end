@@ -81,10 +81,16 @@ public class TestConfig implements CommandLineRunner {
 		Department d3 = new Department(null, "Finanças",10,q1);
 		
 		Worker w1 = new Worker(null, "Alex", "1234la123", "222345", "a@gmail.com", "Cazenga", dateOfBirth1, "Angolana", Sex.M, StatusCivic.SINGLE, "Técnico Médio", WorkerLevel.JUNIOR, TypeContract.UNDETERMINED_TIME, 20000.00, 1000.0, 50000.00);
-		Worker w2 = new Worker(null, "Anna", "1234la123", "222345", "a@gmail.com", "Cazenga", dateOfBirth2, "Angolana", Sex.F, StatusCivic.MERRIED, "Técnico Médio", WorkerLevel.MID_LEVEL, TypeContract.DETERMINED_TIME, 20000.00, 1000.0, 50000.00);
+		Worker w2 = new Worker(null, "Anna", "1234la124", "222346", "an@gmail.com", "Cazenga", dateOfBirth2, "Angolana", Sex.F, StatusCivic.MERRIED, "Técnico Médio", WorkerLevel.MID_LEVEL, TypeContract.DETERMINED_TIME, 20000.00, 1000.0, 50000.00);
 		
 		employerRepository.saveAll(Arrays.asList(q1,q2));
 		departmentRepository.saveAll(Arrays.asList(d1,d2,d3));
+		workerRepository.saveAll(Arrays.asList(w1,w2));
+		
+		w1.getDepartments().add(d1);
+		w2.getDepartments().add(d2);
+		w2.getDepartments().add(d3);
+		
 		workerRepository.saveAll(Arrays.asList(w1,w2));
 		
 	

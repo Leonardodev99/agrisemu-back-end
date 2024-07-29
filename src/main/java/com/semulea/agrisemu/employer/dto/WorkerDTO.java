@@ -2,8 +2,9 @@ package com.semulea.agrisemu.employer.dto;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.semulea.agrisemu.entties.employers.Worker;
 import com.semulea.agrisemu.entties.employers.enums.Sex;
@@ -35,7 +36,8 @@ public class WorkerDTO {
 	private Double irt;
 	private Double grossSalary;
 	
-	private List<DepartmentDTO> departmentsDTO = new ArrayList<>();
+	private Set<DepartmentDTO> departmentsDTO = new HashSet<>();
+	private Long departmentId;
 
 	public WorkerDTO() {
 		
@@ -61,6 +63,10 @@ public class WorkerDTO {
 	        this.basySalary = entity.getBasySalary();
 	        this.irt = entity.getIrt();
 	        this.grossSalary = entity.getGrossSalary();
+	        
+	        this.departmentsDTO = entity.getDepartments().stream()
+		    		.map(DepartmentDTO::new)
+		    		.collect(Collectors.toSet());
 	}
 
 	public Long getId() {
@@ -127,7 +133,7 @@ public class WorkerDTO {
 		return grossSalary;
 	}
 
-	public List<DepartmentDTO> getDepartmentsDTO() {
+	public Set<DepartmentDTO> getDepartmentsDTO() {
 		return departmentsDTO;
 	}
 
@@ -195,7 +201,10 @@ public class WorkerDTO {
 		this.grossSalary = grossSalary;
 	}
 
-
-
-
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
+	}
 }

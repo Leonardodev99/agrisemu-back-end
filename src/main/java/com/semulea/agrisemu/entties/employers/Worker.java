@@ -18,11 +18,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "workers")
+@Table(name = "workers", uniqueConstraints = {
+	    @UniqueConstraint(columnNames = "bi"),
+	    @UniqueConstraint(columnNames = "phone"),
+	    @UniqueConstraint(columnNames = "email")})
 public class Worker implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -46,7 +52,11 @@ public class Worker implements Serializable {
 	private Double irt;
 	private Double grossSalary;
 	
-	@Transient
+	@ManyToMany
+	@JoinTable(name = "worker_department", 
+	joinColumns = @JoinColumn(name = "worker_id"),
+	inverseJoinColumns = @JoinColumn(name = "department_id"))
+	
 	private Set<Department> departments = new HashSet<>();
 	
 	public Worker() {
@@ -239,5 +249,4 @@ public class Worker implements Serializable {
 		Worker other = (Worker) obj;
 		return Objects.equals(id, other.id);
 	}
-
 }

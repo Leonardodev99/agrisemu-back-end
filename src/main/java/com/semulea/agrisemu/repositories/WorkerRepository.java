@@ -5,14 +5,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.semulea.agrisemu.entties.employers.Worker;
-import com.semulea.agrisemu.entties.employers.enums.Sex;
 
 public interface WorkerRepository extends JpaRepository<Worker, Long>{
 	
 	Optional<Worker> findByEmail(String email);
 	Optional<Worker> findByPhone(String phone);
 	Optional<Worker> findByBi(String bi);
-	Optional<Worker> findBySex(Sex sex);
-	
-
+	//Optional<Worker> findBySex(Sex sex);
 }

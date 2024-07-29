@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.semulea.agrisemu.employer.dto.WorkerDTO;
+import com.semulea.agrisemu.entties.employers.Department;
 import com.semulea.agrisemu.entties.employers.Worker;
+import com.semulea.agrisemu.repositories.DepartmentRepository;
 import com.semulea.agrisemu.repositories.WorkerRepository;
 import com.semulea.agrisemu.resources.exceptions.EmailAlreadyExistsException;
 import com.semulea.agrisemu.resources.exceptions.PhoneAlreadyExistsException;
@@ -24,6 +26,9 @@ public class WorkerService {
 
 	@Autowired
 	private WorkerRepository workerRepository;
+	
+	@Autowired
+	private DepartmentRepository departmentRepository;
 
 	public List<WorkerDTO> findAll() {
 		List<Worker> result = workerRepository.findAll();
@@ -60,20 +65,25 @@ public class WorkerService {
 			throw new EmailAlreadyExistsException("Email already exists!");
 		}
 		
-		
 		Worker worker = new Worker(workerDTO);
 		worker.setDateOfBirth(dateOfBirth);
 		worker.setSex(workerDTO.getSex());
 		worker.setStatusCivic(workerDTO.getStatusCivic());
 		worker.setWorkerLevel(workerDTO.getLevel());
 		worker.setTypeContract(workerDTO.getTypeContract());
+		
+		if(workerDTO.getDepartmentId() != null) {
+			Department department = departmentRepository.findById(workerDTO.getDepartmentId())
+					.orElseThrow(() -> new ResourceNotFoundException("Department not found"));
+			worker.getDepartments().add(department);
+		}
 
 		Worker saveWorker = workerRepository.save(worker);
 		return new WorkerDTO(saveWorker);
 	}
 
 	public WorkerDTO update(Long id, WorkerDTO workerDTO) {
-		Worker existingWorker = workerRepository.findById(id).get();
+		Worker existingWorker = workerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 
 		if (workerDTO.getBi() != null && !workerDTO.getBi().isEmpty()) {
 
