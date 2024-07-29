@@ -41,7 +41,7 @@ public class Department implements Serializable {
 	private String name;
 
 	@NotNull(message = "Number workers not be null")
-	private Integer numberWorkers;
+	private Integer numberWorkers = 0;
 	
 	@ManyToOne
 	@JoinColumn(name = "employer_id")
@@ -71,6 +71,16 @@ public class Department implements Serializable {
 	}
 	public void setEmployer(Employer employer) {
 		this.employer = employer;
+	}
+	public void incrementNumberWorkers() {
+		this.numberWorkers = (this.numberWorkers != null) ? this.numberWorkers :0;
+		this.numberWorkers++;
+	}
+	public void decrementNumberWorkers() {
+		this.numberWorkers = (this.numberWorkers != null) ? this.numberWorkers :0;
+		 if(this.numberWorkers > 0) {
+			this.numberWorkers--;
+		}
 	}
 
 }

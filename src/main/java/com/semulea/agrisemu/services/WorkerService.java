@@ -76,8 +76,10 @@ public class WorkerService {
 			Department department = departmentRepository.findById(workerDTO.getDepartmentId())
 					.orElseThrow(() -> new ResourceNotFoundException("Department not found"));
 			worker.getDepartments().add(department);
+			department.incrementNumberWorkers();
+			departmentRepository.save(department);
 		}
-
+		
 		Worker saveWorker = workerRepository.save(worker);
 		return new WorkerDTO(saveWorker);
 	}
@@ -140,6 +142,12 @@ public class WorkerService {
 	}
 	
 	public void delete(Long id) {
+		Worker existingWorker = workerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		for(Department department : existingWorker.getDepartments()) {
+			department.decrementNumberWorkers();
+			departmentRepository.save(department);
+		}
+		
 		workerRepository.deleteById(id);
 	}
 
