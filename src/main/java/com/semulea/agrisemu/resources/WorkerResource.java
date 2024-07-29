@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.semulea.agrisemu.employer.dto.WorkerDTO;
 import com.semulea.agrisemu.services.WorkerService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/workers")
 public class WorkerResource {
@@ -37,7 +39,7 @@ public class WorkerResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<WorkerDTO> insert(@RequestBody WorkerDTO workerDTO) {
+	public ResponseEntity<WorkerDTO> insert(@Valid @RequestBody WorkerDTO workerDTO) {
 		workerDTO = workerService.insert(workerDTO);
 		
 		return ResponseEntity.ok().body(workerDTO);

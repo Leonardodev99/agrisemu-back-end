@@ -25,7 +25,4 @@ public enum StatusCivic {
 		}
 		throw new IllegalArgumentException("Invalid WorkerLevel code");
 	}
-
-	
-
 }

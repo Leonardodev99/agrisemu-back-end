@@ -11,7 +11,14 @@ import com.semulea.agrisemu.entties.employers.enums.Sex;
 import com.semulea.agrisemu.entties.employers.enums.StatusCivic;
 import com.semulea.agrisemu.entties.employers.enums.TypeContract;
 import com.semulea.agrisemu.entties.employers.enums.WorkerLevel;
+import com.semulea.agrisemu.validation.BiValidation;
+import com.semulea.agrisemu.validation.EnumValidation;
+import com.semulea.agrisemu.validation.PhoneFormat;
+import com.semulea.agrisemu.validation.ValidDateOfBirth;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 
 
@@ -20,23 +27,60 @@ import lombok.AllArgsConstructor;
 public class WorkerDTO {
 	
 	private Long id;
+	
+	@NotBlank(message = "Name is mandatory")
+	@Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
 	private String name;
+	
+	@NotBlank(message = "Name is mandatory")
+	@BiValidation
 	private String bi;
+	
+	@NotBlank(message = "Phone is mandatoy")
+	@PhoneFormat
 	private String phone;
 	private String email;
+	
+	@NotBlank(message = "Address is mandatory")
+	@Size(min = 4, max = 50, message = "Address must be between 4 and 50 characters")
 	private String address;
+	
+	@NotBlank(message = "Date of birth is mandatory")
+	@ValidDateOfBirth
 	private String dateOfBirth;
+	
+	@NotBlank(message = "Nationality is mandatory")
+	@Size(min = 4, max = 50, message = "Nationality must be between 4 and 50 characters")
 	private String nationality;
+	
+	@EnumValidation(enumClass = Sex.class, message = "Invalid sex value")
 	private Sex sex;
+	
+	@EnumValidation(enumClass = StatusCivic.class, message = "Invalid status civic value")
 	private StatusCivic statusCivic;
+	
+	@NotBlank(message = "Nationality is mandatory")
+	@Size(min = 4, max = 50, message = "Nationality must be between 3 and 50 characters")
 	private String education;
+	
+	@EnumValidation(enumClass = WorkerLevel.class, message = "Invalid worker level value")
 	private WorkerLevel level;
+	
+	@EnumValidation(enumClass = TypeContract.class, message = "Invalid type contract value")
 	private TypeContract typeContract;
+	
+	@NotNull(message = "Basy salary not be null")
 	private Double basySalary;
+	
+	@NotNull(message = "IRT not be null")
 	private Double irt;
+	
+	@NotNull(message = "Gross salary not be null")
 	private Double grossSalary;
 	
 	private Set<DepartmentDTO> departmentsDTO = new HashSet<>();
+	
+	@NotNull(message = "Id of department not be null")
 	private Long departmentId;
 
 	public WorkerDTO() {

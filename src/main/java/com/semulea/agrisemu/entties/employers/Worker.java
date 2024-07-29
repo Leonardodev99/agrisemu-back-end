@@ -13,6 +13,8 @@ import com.semulea.agrisemu.entties.employers.enums.Sex;
 import com.semulea.agrisemu.entties.employers.enums.StatusCivic;
 import com.semulea.agrisemu.entties.employers.enums.TypeContract;
 import com.semulea.agrisemu.entties.employers.enums.WorkerLevel;
+import com.semulea.agrisemu.validation.BiValidation;
+import com.semulea.agrisemu.validation.PhoneFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +25,9 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "workers", uniqueConstraints = {
@@ -36,20 +41,49 @@ public class Worker implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank(message = "Name is mandatory")
+	@Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
 	private String name;
+	
+	@NotBlank(message = "Name is mandatory")
+	@BiValidation
 	private String bi;
+	
+	@NotBlank(message = "Phone is mandatoy")
+	@PhoneFormat
 	private String phone;
+	
 	private String email;
+	
+	@NotBlank(message = "Address is mandatory")
+	@Size(min = 4, max = 50, message = "Address must be between 4 and 50 characters")
 	private String address;
+	
 	private Instant dateOfBirth;
+	
+	@NotBlank(message = "Nationality is mandatory")
+	@Size(min = 4, max = 50, message = "Nationality must be between 4 and 50 characters")
 	private String nationality;
+	
 	private Integer sex;
+	
 	private Integer statusCivic;
+	
+	@NotBlank(message = "Nationality is mandatory")
+	@Size(min = 4, max = 50, message = "Nationality must be between 3 and 50 characters")
 	private String education;
+	
 	private Integer level;
+	
 	private Integer typeContract;
+	
+	@NotNull(message = "Basy salary not be null")
 	private Double basySalary;
+	
+	@NotNull(message = "IRT not be null")
 	private Double irt;
+	
+	@NotNull(message = "Gross salary not be null")
 	private Double grossSalary;
 	
 	@ManyToMany
