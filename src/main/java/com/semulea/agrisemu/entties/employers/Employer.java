@@ -57,7 +57,7 @@ public class Employer implements Serializable {
 	@Email(message = "Email should be valid")
 	private String email;
 
-	private Integer numberDepartment;
+	private Integer numberDepartment = 0;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "employer")
@@ -139,14 +139,16 @@ public class Employer implements Serializable {
 	}
 
 	
-	public void incrementNumberDepartment() { if(this.departments == null) {
-	   this.numberDepartment = 0; } this.numberDepartment++; }
-	 
-    public void decrementNumberDepartment() { if( this.departments == null) {
-	  this.numberDepartment = 0; }else if(this.numberDepartment> 0) {
-	  
-	  this.numberDepartment--; }
-    }
+	public void incrementNumberDepartment() {
+		this.numberDepartment = (this.numberDepartment != null) ? this.numberDepartment :0;
+		this.numberDepartment++;
+	}
+	public void decrementNumberDepartment() {
+		this.numberDepartment = (this.numberDepartment != null) ? this.numberDepartment :0;
+		 if(this.numberDepartment > 0) {
+			this.numberDepartment--;
+		}
+	}
 	 
 
 	@Override

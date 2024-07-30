@@ -49,7 +49,11 @@ public class ContractService {
         contract.setHoursPerDay(contractDTO.getHoursPerDay());
         contract.setExtraHours(contractDTO.getExtraHours());
         contract.setAdditionalValue(contractDTO.getAdditionalValue());
-        contract.setNumberContract(contractDTO.getNumberContract());
+       
+        worker.incrementNumberContract();
+        worker.getContracts().add(contract);
+        worker.updateBasySalary();
+        workerRepository.save(worker);
 		
 		Contract savedContract = contractRepository.save(contract);
 		return new ContractDTO(savedContract);
@@ -73,19 +77,25 @@ public class ContractService {
 		if(obj.getHoursPerDay() != null) {
 			existsContract.setHoursPerDay(obj.getHoursPerDay());
 		}
-		if(obj.getNumberContract() != null) {
-			existsContract.setNumberContract(obj.getNumberContract());
-		}
 		if(obj.getPerHour() != null) {
 			existsContract.setPerHour(obj.getPerHour());
 		}
 		
 		Contract updatedContract = contractRepository.save(existsContract);
+		
+		Worker worker = existsContract.getWorker();
+		worker.updateBasySalary();
+		workerRepository.save(worker);
 		return new ContractDTO(updatedContract);
 	}
 	public void delete(Long id) {
-		contractRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		Contract existsContract = contractRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		Worker worker = existsContract.getWorker();
+		
 		contractRepository.deleteById(id);
+			
+		worker.decrementNumberContract();;
+		workerRepository.save(worker);
 	} 
 
 }

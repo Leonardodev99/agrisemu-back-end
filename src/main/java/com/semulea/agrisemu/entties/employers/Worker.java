@@ -81,7 +81,7 @@ public class Worker implements Serializable {
 	
 	private Integer typeContract;
 	
-	@NotNull(message = "Basy salary not be null")
+	
 	private Double basySalary;
 	
 	@NotNull(message = "IRT not be null")
@@ -89,6 +89,8 @@ public class Worker implements Serializable {
 	
 	@NotNull(message = "Gross salary not be null")
 	private Double grossSalary;
+	
+	private Integer numberContract = 0;
 	
 	@ManyToMany
 	@JoinTable(name = "worker_department", 
@@ -106,7 +108,7 @@ public class Worker implements Serializable {
 
 	public Worker(Long id, String name, String bi,String phone,String email, String address, Instant dateOfBirth, String nationality, Sex sex,StatusCivic statusCivic,
 			String education, WorkerLevel level, TypeContract typeContract, Double basySalary, Double irt,
-			Double grossSalary) {
+			Double grossSalary, Integer numberContract) {
 		this.id = id;
 		this.name = name;
 		this.bi = bi;
@@ -123,6 +125,7 @@ public class Worker implements Serializable {
 		this.basySalary = basySalary;
 		this.irt = irt;
 		this.grossSalary = grossSalary;
+		this.numberContract = numberContract;
 	}
 	
 	public Worker(WorkerDTO entity) {
@@ -131,6 +134,7 @@ public class Worker implements Serializable {
 		setStatusCivic(entity.getStatusCivic());
 		setWorkerLevel(entity.getLevel());
 		setTypeContract(entity.getTypeContract());
+		this.numberContract = entity.getNumberContract();
 	}
 
 	public Long getId() {
@@ -277,6 +281,15 @@ public class Worker implements Serializable {
 	public List<Contract> getContracts() {
 		return contracts;
 	}
+	
+
+	public Integer getNumberContract() {
+		return numberContract;
+	}
+
+	public void setNumberContract(Integer numberContract) {
+		this.numberContract = numberContract;
+	}
 
 	@Override
 	public int hashCode() {
@@ -293,5 +306,24 @@ public class Worker implements Serializable {
 			return false;
 		Worker other = (Worker) obj;
 		return Objects.equals(id, other.id);
+	}
+	public void incrementNumberContract() {
+		this.numberContract = (this.numberContract != null) ? this.numberContract :0;
+		this.numberContract++;
+	}
+	public void decrementNumberContract() {
+		this.numberContract = (this.numberContract != null) ? this.numberContract :0;
+		 if(this.numberContract > 0) {
+			this.numberContract--;
+		}
+	}
+	public void updateBasySalary() {
+		if(contracts != null && !contracts.isEmpty()) {
+			this.basySalary = contracts.stream()
+					.mapToDouble(Contract::basySalaryPerMonth)
+					.sum();
+		} else {
+			this.basySalary = 0.0;
+		}
 	}
 }

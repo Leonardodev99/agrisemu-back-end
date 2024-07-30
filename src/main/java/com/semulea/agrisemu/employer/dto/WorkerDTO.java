@@ -71,7 +71,6 @@ public class WorkerDTO {
 	@EnumValidation(enumClass = TypeContract.class, message = "Invalid type contract value")
 	private TypeContract typeContract;
 	
-	@NotNull(message = "Basy salary not be null")
 	private Double basySalary;
 	
 	@NotNull(message = "IRT not be null")
@@ -79,6 +78,8 @@ public class WorkerDTO {
 	
 	@NotNull(message = "Gross salary not be null")
 	private Double grossSalary;
+	
+	private Integer numberContract;
 	
 	private Set<DepartmentDTO> departmentsDTO = new HashSet<>();
 	
@@ -113,6 +114,7 @@ public class WorkerDTO {
 	        this.basySalary = entity.getBasySalary();
 	        this.irt = entity.getIrt();
 	        this.grossSalary = entity.getGrossSalary();
+	        this.numberContract = entity.getNumberContract();
 	        
 	        this.departmentsDTO = entity.getDepartments().stream()
 		    		.map(DepartmentDTO::new)
@@ -265,4 +267,13 @@ public class WorkerDTO {
 	public List<ContractDTO> getContracts() {
 		return contracts;
 	}
+
+	public Integer getNumberContract() {
+		return numberContract;
+	}
+
+	public void setNumberContract(Integer numberContract) {
+		this.numberContract = numberContract;
+	}
+	
 }

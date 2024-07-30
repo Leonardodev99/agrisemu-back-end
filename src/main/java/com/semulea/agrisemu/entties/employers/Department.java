@@ -18,7 +18,6 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -40,7 +39,6 @@ public class Department implements Serializable {
 	@Size(min = 2, max = 50, message = "Name must be between 3 and 50 characters")
 	private String name;
 
-	@NotNull(message = "Number workers not be null")
 	private Integer numberWorkers = 0;
 	
 	@ManyToOne
@@ -72,6 +70,8 @@ public class Department implements Serializable {
 	public void setEmployer(Employer employer) {
 		this.employer = employer;
 	}
+	
+	
 	public void incrementNumberWorkers() {
 		this.numberWorkers = (this.numberWorkers != null) ? this.numberWorkers :0;
 		this.numberWorkers++;
@@ -82,5 +82,4 @@ public class Department implements Serializable {
 			this.numberWorkers--;
 		}
 	}
-
 }

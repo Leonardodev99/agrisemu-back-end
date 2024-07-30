@@ -19,7 +19,6 @@ public class ContractDTO {
 	private Long hoursPerDay;
 	private Long extraHours;
 	private Double additionalValue;
-	private Integer numberContract;
 	private Long workerId;
 	
 	private Worker worker;
@@ -94,14 +93,6 @@ public class ContractDTO {
 
 	public void setAdditionalValue(Double additionalValue) {
 		this.additionalValue = additionalValue;
-	}
-
-	public Integer getNumberContract() {
-		return numberContract;
-	}
-
-	public void setNumberContract(Integer numberContract) {
-		this.numberContract = numberContract;
 	}
 
 	public Worker getWorker() {

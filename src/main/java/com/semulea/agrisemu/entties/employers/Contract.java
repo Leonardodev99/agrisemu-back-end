@@ -30,7 +30,6 @@ public class Contract implements Serializable {
 	private Long hoursPerDay;
 	private Long extraHours;
 	private Double additionalValue;
-	private Integer numberContract;
 	
 	
 	@ManyToOne
@@ -42,7 +41,7 @@ public class Contract implements Serializable {
 	}
 
 	public Contract(Long id, Instant initialDate, Instant finalDate, Double perHour, Long hoursPerDay, Long extraHours,
-			Double additionalValue, Integer numberContract, Worker worker) {
+			Double additionalValue, Worker worker) {
 		this.id = id;
 		this.initialDate = initialDate;
 		this.finalDate = finalDate;
@@ -50,7 +49,6 @@ public class Contract implements Serializable {
 		this.hoursPerDay = hoursPerDay;
 		this.extraHours = extraHours;
 		this.additionalValue = additionalValue;
-		this.numberContract = numberContract;
 		this.worker = worker;
 	}
 	
@@ -114,14 +112,6 @@ public class Contract implements Serializable {
 		this.additionalValue = additionalValue;
 	}
 
-	public Integer getNumberContract() {
-		return numberContract;
-	}
-
-	public void setNumberContract(Integer numberContract) {
-		this.numberContract = numberContract;
-	}
-
 	public Worker getWorker() {
 		return worker;
 	}
@@ -145,5 +135,8 @@ public class Contract implements Serializable {
 			return false;
 		Contract other = (Contract) obj;
 		return Objects.equals(id, other.id);
+	}
+	public Double basySalaryPerMonth() {
+		return perHour*hoursPerDay*30;
 	}
 }

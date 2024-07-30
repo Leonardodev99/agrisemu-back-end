@@ -25,7 +25,6 @@ public class DepartmentDTO implements Serializable {
 	@Size(min = 2, max = 50, message = "Name must be between 3 and 50 characters")
 	private String name;
 	
-	@NotNull(message = "Number workers not be null")
 	private Integer numberWorkers;
 	
 	

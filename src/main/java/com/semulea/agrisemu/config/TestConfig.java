@@ -99,11 +99,11 @@ public class TestConfig implements CommandLineRunner {
 		Department d2 = new Department(null, "Finanças",10,q2);
 		Department d3 = new Department(null, "Finanças",10,q1);
 		
-		Worker w1 = new Worker(null, "Alex", "005678914LA041", "222 345 111", "a@gmail.com", "Cazenga", dateOfBirth1, "Angolana", Sex.M, StatusCivic.SINGLE, "Técnico Médio", WorkerLevel.JUNIOR, TypeContract.UNDETERMINED_TIME, 20000.00, 1000.0, 50000.00);
-		Worker w2 = new Worker(null, "Anna", "005678914LA042", "222 346 202", "an@gmail.com", "Cazenga", dateOfBirth2, "Angolana", Sex.F, StatusCivic.MERRIED, "Técnico Médio", WorkerLevel.MID_LEVEL, TypeContract.DETERMINED_TIME, 20000.00, 1000.0, 50000.00);
+		Worker w1 = new Worker(null, "Alex", "005678914LA041", "222 345 111", "a@gmail.com", "Cazenga", dateOfBirth1, "Angolana", Sex.M, StatusCivic.SINGLE, "Técnico Médio", WorkerLevel.JUNIOR, TypeContract.UNDETERMINED_TIME, 20000.00, 1000.0, 50000.00, 1);
+		Worker w2 = new Worker(null, "Anna", "005678914LA042", "222 346 202", "an@gmail.com", "Cazenga", dateOfBirth2, "Angolana", Sex.F, StatusCivic.MERRIED, "Técnico Médio", WorkerLevel.MID_LEVEL, TypeContract.DETERMINED_TIME, 20000.00, 1000.0, 50000.00, 1);
 		
-		Contract c1 = new Contract(null, initialDate1, finalDate1, 1000.00, 8L, 1L, 2000.00, 1, w2);
-		Contract c2 = new Contract(null, initialDate2, finalDate2, 1000.00, 8L, 1L, 2000.00, 1, w1);
+		Contract c1 = new Contract(null, initialDate1, finalDate1, 1000.00, 8L, 1L, 2000.00, w2);
+		Contract c2 = new Contract(null, initialDate2, finalDate2, 1000.00, 8L, 1L, 2000.00, w1);
 		
 		employerRepository.saveAll(Arrays.asList(q1,q2));
 		departmentRepository.saveAll(Arrays.asList(d1,d2,d3));
