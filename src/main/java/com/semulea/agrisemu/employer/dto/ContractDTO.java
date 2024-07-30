@@ -1,6 +1,9 @@
 package com.semulea.agrisemu.employer.dto;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.BeanUtils;
 
@@ -10,8 +13,8 @@ import com.semulea.agrisemu.entties.employers.Worker;
 public class ContractDTO {
 	
 	private Long id;
-	private Instant initialDate;
-	private Instant finalDate;
+	private String initialDate;
+	private String finalDate;
 	private Double perHour;
 	private Long hoursPerDay;
 	private Long extraHours;
@@ -25,13 +28,16 @@ public class ContractDTO {
 		
 	}
 	
-	
-	
 	public ContractDTO(Contract entity) {
 		BeanUtils.copyProperties(entity, this);
 		if(entity.getWorker() != null) {
 			this.workerId = entity.getWorker().getId();
 		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+				.withZone(ZoneId.systemDefault());
+		this.initialDate = formatter.format(entity.getInitialDate());
+		this.finalDate = formatter.format(entity.getFinalDate());
+
 	}
 
 	public Long getId() {
@@ -42,19 +48,19 @@ public class ContractDTO {
 		this.id = id;
 	}
 
-	public Instant getInitialDate() {
+	public String getInitialDate() {
 		return initialDate;
 	}
 
-	public void setInitialDate(Instant initialDate) {
+	public void setInitialDate(String initialDate) {
 		this.initialDate = initialDate;
 	}
 
-	public Instant getFinalDate() {
+	public String getFinalDate() {
 		return finalDate;
 	}
 
-	public void setFinalDate(Instant finalDate) {
+	public void setFinalDate(String finalDate) {
 		this.finalDate = finalDate;
 	}
 
@@ -112,6 +118,16 @@ public class ContractDTO {
 
 	public void setWorkerId(Long workerId) {
 		this.workerId = workerId;
+	}
+	public Instant getInitialDateAsInstant() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		LocalDateTime localDateTime = LocalDateTime.parse(this.initialDate, formatter);
+		return localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+	}
+	public Instant getFinalDateAsInstant() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		LocalDateTime localDateTime = LocalDateTime.parse(this.finalDate, formatter);
+		return localDateTime.atZone(ZoneId.systemDefault()).toInstant();
 	}
 	
 }

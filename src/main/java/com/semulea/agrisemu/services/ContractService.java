@@ -1,5 +1,6 @@
 package com.semulea.agrisemu.services;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class ContractService {
 	
 	@Autowired
 	private WorkerRepository workerRepository;
-	
+
 	public List<ContractDTO> findAll() {
 		List<Contract> list = contractRepository.findAll();
 		return list.stream().map(x -> new ContractDTO(x)).toList();
@@ -34,18 +35,56 @@ public class ContractService {
 		Worker worker = workerRepository.findById(contractDTO.getWorkerId())
 				.orElseThrow(() -> new ResourceNotFoundException(contractDTO.getWorkerId()));
 		
+		Instant initialDate = Instant.now();
+		Instant finalDate = contractDTO.getFinalDateAsInstant();
+		if(!finalDate.isAfter(initialDate)) {
+			throw new ResourceNotFoundException("final date must be after the  Initail date");
+		}
+		
 		Contract contract = new Contract(contractDTO);
-		contract.setWorker(worker);
+		contract.setInitialDate(initialDate);
+        contract.setFinalDate(finalDate);
+        contract.setWorker(worker);
+        contract.setPerHour(contractDTO.getPerHour());
+        contract.setHoursPerDay(contractDTO.getHoursPerDay());
+        contract.setExtraHours(contractDTO.getExtraHours());
+        contract.setAdditionalValue(contractDTO.getAdditionalValue());
+        contract.setNumberContract(contractDTO.getNumberContract());
+		
 		Contract savedContract = contractRepository.save(contract);
 		return new ContractDTO(savedContract);
 	}
 	public ContractDTO update(Long id, ContractDTO obj) {
-		Contract existsContract = contractRepository.findById(id).get();
+		Contract existsContract = contractRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		
+		if(obj.getAdditionalValue() != null) {
+			existsContract.setAdditionalValue(obj.getAdditionalValue());
+		}
+		if(obj.getExtraHours() != null) {
+			existsContract.setExtraHours(obj.getExtraHours());
+		}
+		Instant initialDate = Instant.now();
+	        Instant finalDate = obj.getFinalDateAsInstant();
+
+	        if (!finalDate.isAfter(initialDate)) {
+	            throw new ResourceNotFoundException("Final date must be after the initial date.");
+	        }
+		
+		if(obj.getHoursPerDay() != null) {
+			existsContract.setHoursPerDay(obj.getHoursPerDay());
+		}
+		if(obj.getNumberContract() != null) {
+			existsContract.setNumberContract(obj.getNumberContract());
+		}
+		if(obj.getPerHour() != null) {
+			existsContract.setPerHour(obj.getPerHour());
+		}
 		
 		Contract updatedContract = contractRepository.save(existsContract);
 		return new ContractDTO(updatedContract);
 	}
 	public void delete(Long id) {
+		contractRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		contractRepository.deleteById(id);
 	} 
 
