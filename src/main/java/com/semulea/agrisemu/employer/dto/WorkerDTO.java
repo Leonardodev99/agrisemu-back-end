@@ -2,7 +2,9 @@ package com.semulea.agrisemu.employer.dto;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -82,6 +84,10 @@ public class WorkerDTO {
 	
 	@NotNull(message = "Id of department not be null")
 	private Long departmentId;
+	
+	private List<ContractDTO> contracts = new ArrayList<>();
+
+	
 
 	public WorkerDTO() {
 		
@@ -111,6 +117,10 @@ public class WorkerDTO {
 	        this.departmentsDTO = entity.getDepartments().stream()
 		    		.map(DepartmentDTO::new)
 		    		.collect(Collectors.toSet());
+	        
+	        this.contracts = entity.getContracts().stream()
+	                .map(ContractDTO::new)
+	                .collect(Collectors.toList());
 	}
 
 	public Long getId() {
@@ -250,5 +260,9 @@ public class WorkerDTO {
 	}
 	public void setDepartmentId(Long departmentId) {
 		this.departmentId = departmentId;
+	}
+
+	public List<ContractDTO> getContracts() {
+		return contracts;
 	}
 }

@@ -2,12 +2,15 @@ package com.semulea.agrisemu.entties.employers;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semulea.agrisemu.employer.dto.WorkerDTO;
 import com.semulea.agrisemu.entties.employers.enums.Sex;
 import com.semulea.agrisemu.entties.employers.enums.StatusCivic;
@@ -23,6 +26,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
@@ -90,8 +94,11 @@ public class Worker implements Serializable {
 	@JoinTable(name = "worker_department", 
 	joinColumns = @JoinColumn(name = "worker_id"),
 	inverseJoinColumns = @JoinColumn(name = "department_id"))
-	
 	private Set<Department> departments = new HashSet<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "worker")
+	private List<Contract> contracts = new ArrayList<>();
 	
 	public Worker() {
 		
@@ -265,6 +272,10 @@ public class Worker implements Serializable {
 
 	public Set<Department> getDepartments() {
 		return departments;
+	}
+	
+	public List<Contract> getContracts() {
+		return contracts;
 	}
 
 	@Override

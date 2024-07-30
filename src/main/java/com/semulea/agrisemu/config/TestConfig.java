@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Profile;
 import com.semulea.agrisemu.entties.User;
 import com.semulea.agrisemu.entties.UserAdmin;
 import com.semulea.agrisemu.entties.UserWorker;
+import com.semulea.agrisemu.entties.employers.Contract;
 import com.semulea.agrisemu.entties.employers.Department;
 import com.semulea.agrisemu.entties.employers.Employer;
 import com.semulea.agrisemu.entties.employers.Worker;
@@ -21,6 +22,7 @@ import com.semulea.agrisemu.entties.employers.enums.Sex;
 import com.semulea.agrisemu.entties.employers.enums.StatusCivic;
 import com.semulea.agrisemu.entties.employers.enums.TypeContract;
 import com.semulea.agrisemu.entties.employers.enums.WorkerLevel;
+import com.semulea.agrisemu.repositories.ContractRepository;
 import com.semulea.agrisemu.repositories.DepartmentRepository;
 import com.semulea.agrisemu.repositories.EmployerRepository;
 import com.semulea.agrisemu.repositories.UserAdminRepository;
@@ -49,16 +51,33 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private WorkerRepository workerRepository;
+	
+	@Autowired
+	private ContractRepository contractRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		LocalDate localDate1 = LocalDate.parse("14/04/2002", formatter);
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		
+		LocalDate localDate1 = LocalDate.parse("14/04/2002", dateFormatter);
 		Instant dateOfBirth1 = localDate1.atStartOfDay(ZoneId.systemDefault()).toInstant();
 		
-		LocalDate localDate2 = LocalDate.parse("12/04/2002", formatter);
+		LocalDate localDate2 = LocalDate.parse("12/04/2002", dateFormatter);
 		Instant dateOfBirth2 = localDate2.atStartOfDay(ZoneId.systemDefault()).toInstant();
+		
+		
+		LocalDate localDateTimeInitial1 = LocalDate.parse("14/04/2002 10:30", dateTimeFormatter);
+		Instant initialDate1 = localDateTimeInitial1.atStartOfDay(ZoneId.systemDefault()).toInstant();
+		LocalDate localDateTimeFinal1 = LocalDate.parse("14/04/2003 10:30", dateTimeFormatter);
+		Instant finalDate1 = localDateTimeFinal1.atStartOfDay(ZoneId.systemDefault()).toInstant();
+		
+		LocalDate localDateTimeInitial2 = LocalDate.parse("14/04/2004 10:30", dateTimeFormatter);
+		Instant initialDate2 = localDateTimeInitial2.atStartOfDay(ZoneId.systemDefault()).toInstant();
+		LocalDate localDateTimeFinal2 = LocalDate.parse("14/04/2005 10:30", dateTimeFormatter);
+		Instant finalDate2 = localDateTimeFinal2.atStartOfDay(ZoneId.systemDefault()).toInstant();
+		
 		
 		UserWorker u1 = new UserWorker(null, "Pedro Sambongo", "pedro@gmail.com", "123456");
 		UserWorker u2 = new UserWorker(null, "Miguel Canga", "canga@gmail.com", "123456");
@@ -83,6 +102,9 @@ public class TestConfig implements CommandLineRunner {
 		Worker w1 = new Worker(null, "Alex", "005678914LA041", "222 345 111", "a@gmail.com", "Cazenga", dateOfBirth1, "Angolana", Sex.M, StatusCivic.SINGLE, "Técnico Médio", WorkerLevel.JUNIOR, TypeContract.UNDETERMINED_TIME, 20000.00, 1000.0, 50000.00);
 		Worker w2 = new Worker(null, "Anna", "005678914LA042", "222 346 202", "an@gmail.com", "Cazenga", dateOfBirth2, "Angolana", Sex.F, StatusCivic.MERRIED, "Técnico Médio", WorkerLevel.MID_LEVEL, TypeContract.DETERMINED_TIME, 20000.00, 1000.0, 50000.00);
 		
+		Contract c1 = new Contract(null, initialDate1, finalDate1, 1000.00, 8L, 1L, 2000.00, 1, w2);
+		Contract c2 = new Contract(null, initialDate2, finalDate2, 1000.00, 8L, 1L, 2000.00, 1, w1);
+		
 		employerRepository.saveAll(Arrays.asList(q1,q2));
 		departmentRepository.saveAll(Arrays.asList(d1,d2,d3));
 		workerRepository.saveAll(Arrays.asList(w1,w2));
@@ -92,6 +114,7 @@ public class TestConfig implements CommandLineRunner {
 		w2.getDepartments().add(d3);
 		
 		workerRepository.saveAll(Arrays.asList(w1,w2));
+		contractRepository.saveAll(Arrays.asList(c1,c2));
 		
 	
 	}
