@@ -81,16 +81,19 @@ public class Worker implements Serializable {
 	
 	private Integer typeContract;
 	
-	
 	private Double basySalary;
 	
 	@NotNull(message = "IRT not be null")
 	private Double irt;
 	
-	@NotNull(message = "Gross salary not be null")
+	
 	private Double grossSalary;
 	
 	private Integer numberContract = 0;
+	
+	private Double totalValueContract;
+	
+	private Double netSalary;
 	
 	@ManyToMany
 	@JoinTable(name = "worker_department", 
@@ -108,7 +111,7 @@ public class Worker implements Serializable {
 
 	public Worker(Long id, String name, String bi,String phone,String email, String address, Instant dateOfBirth, String nationality, Sex sex,StatusCivic statusCivic,
 			String education, WorkerLevel level, TypeContract typeContract, Double basySalary, Double irt,
-			Double grossSalary, Integer numberContract) {
+			Double grossSalary, Integer numberContract, Double totalValueContract, Double netSalary) {
 		this.id = id;
 		this.name = name;
 		this.bi = bi;
@@ -126,6 +129,8 @@ public class Worker implements Serializable {
 		this.irt = irt;
 		this.grossSalary = grossSalary;
 		this.numberContract = numberContract;
+		this.totalValueContract = totalValueContract;
+		this.netSalary = netSalary;
 	}
 	
 	public Worker(WorkerDTO entity) {
@@ -135,6 +140,8 @@ public class Worker implements Serializable {
 		setWorkerLevel(entity.getLevel());
 		setTypeContract(entity.getTypeContract());
 		this.numberContract = entity.getNumberContract();
+		this.totalValueContract = entity.getTotalValueContract();
+		this.netSalary = entity.getNetSalary();
 	}
 
 	public Long getId() {
@@ -290,6 +297,23 @@ public class Worker implements Serializable {
 	public void setNumberContract(Integer numberContract) {
 		this.numberContract = numberContract;
 	}
+	
+
+	public Double getTotalValueContract() {
+		return totalValueContract;
+	}
+
+	public void setTotalValueContract(Double totalValueContract) {
+		this.totalValueContract = totalValueContract;
+	}
+
+	public Double getNetSalary() {
+		return netSalary;
+	}
+
+	public void setNetSalary(Double netSalary) {
+		this.netSalary = netSalary;
+	}
 
 	@Override
 	public int hashCode() {
@@ -324,6 +348,16 @@ public class Worker implements Serializable {
 					.sum();
 		} else {
 			this.basySalary = 0.0;
+		}
+	}
+	
+	public void updateGrossSalary() {
+		if(contracts != null && !contracts.isEmpty()) {
+			this.grossSalary = contracts.stream()
+					.mapToDouble(Contract::grossSalaryPerMonth)
+					.sum();
+		} else {
+			this.grossSalary = 0.0;
 		}
 	}
 }

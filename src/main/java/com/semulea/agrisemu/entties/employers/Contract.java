@@ -26,9 +26,9 @@ public class Contract implements Serializable {
 	private Long id;
 	private Instant initialDate;
 	private Instant finalDate;
-	private Double perHour;
+	private Double valuePerHour;
 	private Long hoursPerDay;
-	private Long extraHours;
+	private Double extraHoursValue;
 	private Double additionalValue;
 	
 	
@@ -40,14 +40,14 @@ public class Contract implements Serializable {
 		
 	}
 
-	public Contract(Long id, Instant initialDate, Instant finalDate, Double perHour, Long hoursPerDay, Long extraHours,
+	public Contract(Long id, Instant initialDate, Instant finalDate, Double valuePerHour, Long hoursPerDay, Double extraHoursValue,
 			Double additionalValue, Worker worker) {
 		this.id = id;
 		this.initialDate = initialDate;
 		this.finalDate = finalDate;
-		this.perHour = perHour;
+		this.valuePerHour = valuePerHour;
 		this.hoursPerDay = hoursPerDay;
-		this.extraHours = extraHours;
+		this.extraHoursValue = extraHoursValue;
 		this.additionalValue = additionalValue;
 		this.worker = worker;
 	}
@@ -80,12 +80,12 @@ public class Contract implements Serializable {
 		this.finalDate = finalDate;
 	}
 
-	public Double getPerHour() {
-		return perHour;
+	public Double getValuePerHour() {
+		return valuePerHour;
 	}
 
-	public void setPerHour(Double perHour) {
-		this.perHour = perHour;
+	public void setValuePerHour(Double valuePerHour) {
+		this.valuePerHour = valuePerHour;
 	}
 
 	public Long getHoursPerDay() {
@@ -96,12 +96,12 @@ public class Contract implements Serializable {
 		this.hoursPerDay = hoursPerDay;
 	}
 
-	public Long getExtraHours() {
-		return extraHours;
+	public Double getExtraHoursValue() {
+		return extraHoursValue;
 	}
 
-	public void setExtraHours(Long extraHours) {
-		this.extraHours = extraHours;
+	public void setExtraHoursValue(Double extraHoursValue) {
+		this.extraHoursValue = extraHoursValue;
 	}
 
 	public Double getAdditionalValue() {
@@ -137,6 +137,9 @@ public class Contract implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 	public Double basySalaryPerMonth() {
-		return perHour*hoursPerDay*30;
+		return valuePerHour*hoursPerDay*30;
+	}
+	public Double grossSalaryPerMonth( ) {
+		return (extraHoursValue + additionalValue) + basySalaryPerMonth();
 	}
 }

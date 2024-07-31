@@ -45,14 +45,15 @@ public class ContractService {
 		contract.setInitialDate(initialDate);
         contract.setFinalDate(finalDate);
         contract.setWorker(worker);
-        contract.setPerHour(contractDTO.getPerHour());
+        contract.setValuePerHour(contractDTO.getValuePerHour());
         contract.setHoursPerDay(contractDTO.getHoursPerDay());
-        contract.setExtraHours(contractDTO.getExtraHours());
+        contract.setExtraHoursValue(contractDTO.getExtraHoursValue());
         contract.setAdditionalValue(contractDTO.getAdditionalValue());
        
         worker.incrementNumberContract();
         worker.getContracts().add(contract);
         worker.updateBasySalary();
+        worker.updateGrossSalary();
         workerRepository.save(worker);
 		
 		Contract savedContract = contractRepository.save(contract);
@@ -64,8 +65,8 @@ public class ContractService {
 		if(obj.getAdditionalValue() != null) {
 			existsContract.setAdditionalValue(obj.getAdditionalValue());
 		}
-		if(obj.getExtraHours() != null) {
-			existsContract.setExtraHours(obj.getExtraHours());
+		if(obj.getExtraHoursValue() != null) {
+			existsContract.setExtraHoursValue(obj.getExtraHoursValue());
 		}
 		Instant initialDate = Instant.now();
 	        Instant finalDate = obj.getFinalDateAsInstant();
@@ -77,25 +78,29 @@ public class ContractService {
 		if(obj.getHoursPerDay() != null) {
 			existsContract.setHoursPerDay(obj.getHoursPerDay());
 		}
-		if(obj.getPerHour() != null) {
-			existsContract.setPerHour(obj.getPerHour());
+		if(obj.getValuePerHour() != null) {
+			existsContract.setValuePerHour(obj.getValuePerHour());
 		}
 		
 		Contract updatedContract = contractRepository.save(existsContract);
 		
 		Worker worker = existsContract.getWorker();
 		worker.updateBasySalary();
+		worker.updateGrossSalary();
 		workerRepository.save(worker);
 		return new ContractDTO(updatedContract);
 	}
 	public void delete(Long id) {
 		Contract existsContract = contractRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		Worker worker = existsContract.getWorker();
+			
+		worker.decrementNumberContract();
+		worker.getContracts().remove(existsContract);
+		worker.updateBasySalary();
+		worker.updateGrossSalary();
+		workerRepository.save(worker);
 		
 		contractRepository.deleteById(id);
-			
-		worker.decrementNumberContract();;
-		workerRepository.save(worker);
 	} 
 
 }

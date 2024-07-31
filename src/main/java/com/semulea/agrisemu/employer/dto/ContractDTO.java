@@ -15,9 +15,9 @@ public class ContractDTO {
 	private Long id;
 	private String initialDate;
 	private String finalDate;
-	private Double perHour;
+	private Double valuePerHour;
 	private Long hoursPerDay;
-	private Long extraHours;
+	private Double extraHoursValue;
 	private Double additionalValue;
 	private Long workerId;
 	
@@ -63,12 +63,12 @@ public class ContractDTO {
 		this.finalDate = finalDate;
 	}
 
-	public Double getPerHour() {
-		return perHour;
+	public Double getValuePerHour() {
+		return valuePerHour;
 	}
 
-	public void setPerHour(Double perHour) {
-		this.perHour = perHour;
+	public void setValuePerHour(Double valuePerHour) {
+		this.valuePerHour = valuePerHour;
 	}
 
 	public Long getHoursPerDay() {
@@ -79,12 +79,12 @@ public class ContractDTO {
 		this.hoursPerDay = hoursPerDay;
 	}
 
-	public Long getExtraHours() {
-		return extraHours;
+	public Double getExtraHoursValue() {
+		return extraHoursValue;
 	}
 
-	public void setExtraHours(Long extraHours) {
-		this.extraHours = extraHours;
+	public void setExtraHoursValue(Double extraHoursValue) {
+		this.extraHoursValue = extraHoursValue;
 	}
 
 	public Double getAdditionalValue() {
