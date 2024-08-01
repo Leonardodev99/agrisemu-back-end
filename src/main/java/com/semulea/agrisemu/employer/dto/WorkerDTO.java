@@ -81,6 +81,8 @@ public class WorkerDTO {
 	private Double totalValueContract;
 
 	private Double netSalary;
+	
+	private Long durationContract;
 
 	private Set<DepartmentDTO> departmentsDTO = new HashSet<>();
 
@@ -116,6 +118,7 @@ public class WorkerDTO {
 		this.numberContract = entity.getNumberContract();
 		this.totalValueContract = entity.getTotalValueContract();
 		this.netSalary = entity.getNetSalary();
+		this.durationContract = entity.getDurationContract();
 
 		this.departmentsDTO = entity.getDepartments().stream().map(DepartmentDTO::new).collect(Collectors.toSet());
 
@@ -289,6 +292,13 @@ public class WorkerDTO {
 	public void setNetSalary(Double netSalary) {
 		this.netSalary = netSalary;
 	}
-	
+
+	public Long getDurationContract() {
+		return durationContract;
+	}
+
+	public void setDurationContract(Long durationContract) {
+		this.durationContract = durationContract;
+	}
 
 }

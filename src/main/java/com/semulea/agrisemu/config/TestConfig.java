@@ -99,8 +99,8 @@ public class TestConfig implements CommandLineRunner {
 		Department d2 = new Department(null, "Finanças",10,q2);
 		Department d3 = new Department(null, "Finanças",10,q1);
 		
-		Worker w1 = new Worker(null, "Alex", "005678914LA041", "222 345 111", "a@gmail.com", "Cazenga", dateOfBirth1, "Angolana", Sex.M, StatusCivic.SINGLE, "Técnico Médio", WorkerLevel.JUNIOR, TypeContract.UNDETERMINED_TIME, 20000.00, 1000.0, 50000.00, 1, 100000.0, 80000.0);
-		Worker w2 = new Worker(null, "Anna", "005678914LA042", "222 346 202", "an@gmail.com", "Cazenga", dateOfBirth2, "Angolana", Sex.F, StatusCivic.MERRIED, "Técnico Médio", WorkerLevel.MID_LEVEL, TypeContract.DETERMINED_TIME, 20000.00, 1000.0, 50000.00, 1, 100000.0, 80000.0);
+		Worker w1 = new Worker(null, "Alex", "005678914LA041", "222 345 111", "a@gmail.com", "Cazenga", dateOfBirth1, "Angolana", Sex.M, StatusCivic.SINGLE, "Técnico Médio", WorkerLevel.JUNIOR, TypeContract.UNDETERMINED_TIME, 20000.00, 1000.0, 50000.00, 1, 100000.0, 80000.0, 30L);
+		Worker w2 = new Worker(null, "Anna", "005678914LA042", "222 346 202", "an@gmail.com", "Cazenga", dateOfBirth2, "Angolana", Sex.F, StatusCivic.MERRIED, "Técnico Médio", WorkerLevel.MID_LEVEL, TypeContract.DETERMINED_TIME, 20000.00, 1000.0, 50000.00, 1, 100000.0, 80000.0, 30l);
 		
 		Contract c1 = new Contract(null, initialDate1, finalDate1, 1000.00, 8L, 1000.0, 2000.00, 3.0, w2);
 		Contract c2 = new Contract(null, initialDate2, finalDate2, 1000.00, 8L, 1000.0, 2000.00, 7.0, w1);

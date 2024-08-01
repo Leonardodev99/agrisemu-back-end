@@ -129,5 +129,4 @@ public class ContractDTO {
 		LocalDateTime localDateTime = LocalDateTime.parse(this.finalDate, formatter);
 		return localDateTime.atZone(ZoneId.systemDefault()).toInstant();
 	}
-	
 }

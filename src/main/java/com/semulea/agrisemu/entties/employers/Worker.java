@@ -92,6 +92,8 @@ public class Worker implements Serializable {
 	
 	private Double netSalary;
 	
+	private Long durationContract;
+	
 	@ManyToMany
 	@JoinTable(name = "worker_department", 
 	joinColumns = @JoinColumn(name = "worker_id"),
@@ -108,7 +110,7 @@ public class Worker implements Serializable {
 
 	public Worker(Long id, String name, String bi,String phone,String email, String address, Instant dateOfBirth, String nationality, Sex sex,StatusCivic statusCivic,
 			String education, WorkerLevel level, TypeContract typeContract, Double basySalary, Double irt,
-			Double grossSalary, Integer numberContract, Double totalValueContract, Double netSalary) {
+			Double grossSalary, Integer numberContract, Double totalValueContract, Double netSalary, Long durationContrac) {
 		this.id = id;
 		this.name = name;
 		this.bi = bi;
@@ -128,6 +130,7 @@ public class Worker implements Serializable {
 		this.numberContract = numberContract;
 		this.totalValueContract = totalValueContract;
 		this.netSalary = netSalary;
+		this.durationContract = durationContrac;
 	}
 	
 	public Worker(WorkerDTO entity) {
@@ -312,6 +315,14 @@ public class Worker implements Serializable {
 		this.netSalary = netSalary;
 	}
 
+	public Long getDurationContract() {
+		return durationContract;
+	}
+
+	public void setDurationContract(Long durationContract) {
+		this.durationContract = durationContract;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -385,6 +396,15 @@ public class Worker implements Serializable {
 					.sum();
 		} else {
 			this.totalValueContract = 0.0;
+		}
+	}
+	public void updateDurationContract() {
+		if(contracts != null && !contracts.isEmpty()) {
+			this.durationContract = (long) contracts.stream()
+					.mapToDouble(Contract::getContractDuration)
+					.sum();
+		} else {
+			this.durationContract = 0L;
 		}
 	}
 	

@@ -1,12 +1,14 @@
 package com.semulea.agrisemu.entties.employers;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
 
 import org.springframework.beans.BeanUtils;
 
 import com.semulea.agrisemu.employer.dto.ContractDTO;
+import com.semulea.agrisemu.entties.employers.enums.TypeContract;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -160,5 +162,13 @@ public class Contract implements Serializable {
 	}
 	public Double valueContracts() {
 		return netSalaryPerMonth()* worker.getNumberContract();
+	}
+	public Long getContractDuration() {
+		if(worker.getTypeContract() == TypeContract.UNDETERMINED_TIME) {
+			return null;
+		} else if(worker.getTypeContract() == TypeContract.DETERMINED_TIME) {
+			return Duration.between(initialDate, finalDate).toDays();
+		}
+		return null;
 	}
 }
