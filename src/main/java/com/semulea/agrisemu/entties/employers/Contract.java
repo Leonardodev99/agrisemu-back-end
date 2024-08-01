@@ -155,4 +155,7 @@ public class Contract implements Serializable {
 	public Double itrTax() {
 		return (grossSalaryPerMonth() * taxIrt)/100.0;
 	}
+	public Double netSalaryPerMonth() {
+		return grossSalaryPerMonth() - itrTax();
+	}
 }
