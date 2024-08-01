@@ -19,6 +19,7 @@ public class ContractDTO {
 	private Long hoursPerDay;
 	private Double extraHoursValue;
 	private Double additionalValue;
+	private Double taxIrt;
 	private Long workerId;
 	
 	private Worker worker;
@@ -93,6 +94,14 @@ public class ContractDTO {
 
 	public void setAdditionalValue(Double additionalValue) {
 		this.additionalValue = additionalValue;
+	}
+	
+	public Double getTaxIrt() {
+		return taxIrt;
+	}
+
+	public void setTaxIrt(Double taxIrt) {
+		this.taxIrt = taxIrt;
 	}
 
 	public Worker getWorker() {

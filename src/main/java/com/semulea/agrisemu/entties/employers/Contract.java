@@ -30,6 +30,7 @@ public class Contract implements Serializable {
 	private Long hoursPerDay;
 	private Double extraHoursValue;
 	private Double additionalValue;
+	private Double taxIrt;
 	
 	
 	@ManyToOne
@@ -41,7 +42,7 @@ public class Contract implements Serializable {
 	}
 
 	public Contract(Long id, Instant initialDate, Instant finalDate, Double valuePerHour, Long hoursPerDay, Double extraHoursValue,
-			Double additionalValue, Worker worker) {
+			Double additionalValue, Double taxIrt, Worker worker) {
 		this.id = id;
 		this.initialDate = initialDate;
 		this.finalDate = finalDate;
@@ -49,6 +50,7 @@ public class Contract implements Serializable {
 		this.hoursPerDay = hoursPerDay;
 		this.extraHoursValue = extraHoursValue;
 		this.additionalValue = additionalValue;
+		this.taxIrt = taxIrt;
 		this.worker = worker;
 	}
 	
@@ -111,6 +113,14 @@ public class Contract implements Serializable {
 	public void setAdditionalValue(Double additionalValue) {
 		this.additionalValue = additionalValue;
 	}
+	
+	public Double getTaxIrt() {
+		return taxIrt;
+	}
+
+	public void setTaxIrt(Double taxIrt) {
+		this.taxIrt = taxIrt;
+	}
 
 	public Worker getWorker() {
 		return worker;
@@ -141,5 +151,8 @@ public class Contract implements Serializable {
 	}
 	public Double grossSalaryPerMonth( ) {
 		return (extraHoursValue + additionalValue) + basySalaryPerMonth();
+	}
+	public Double itrTax() {
+		return (grossSalaryPerMonth() * taxIrt)/100.0;
 	}
 }

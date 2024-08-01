@@ -72,7 +72,6 @@ public class WorkerDTO {
 
 	private Double basySalary;
 
-	@NotNull(message = "IRT not be null")
 	private Double irt;
 
 	private Double grossSalary;

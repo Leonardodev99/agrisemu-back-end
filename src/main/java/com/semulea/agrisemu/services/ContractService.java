@@ -49,11 +49,13 @@ public class ContractService {
         contract.setHoursPerDay(contractDTO.getHoursPerDay());
         contract.setExtraHoursValue(contractDTO.getExtraHoursValue());
         contract.setAdditionalValue(contractDTO.getAdditionalValue());
+        contract.setTaxIrt(contractDTO.getTaxIrt());
        
         worker.incrementNumberContract();
         worker.getContracts().add(contract);
         worker.updateBasySalary();
         worker.updateGrossSalary();
+        worker.updateIrt();
         workerRepository.save(worker);
 		
 		Contract savedContract = contractRepository.save(contract);
@@ -64,6 +66,9 @@ public class ContractService {
 		
 		if(obj.getAdditionalValue() != null) {
 			existsContract.setAdditionalValue(obj.getAdditionalValue());
+		}
+		if(obj.getTaxIrt() != null) {
+			existsContract.setTaxIrt(obj.getTaxIrt());
 		}
 		if(obj.getExtraHoursValue() != null) {
 			existsContract.setExtraHoursValue(obj.getExtraHoursValue());
@@ -87,6 +92,7 @@ public class ContractService {
 		Worker worker = existsContract.getWorker();
 		worker.updateBasySalary();
 		worker.updateGrossSalary();
+		worker.updateIrt();
 		workerRepository.save(worker);
 		return new ContractDTO(updatedContract);
 	}
@@ -98,6 +104,7 @@ public class ContractService {
 		worker.getContracts().remove(existsContract);
 		worker.updateBasySalary();
 		worker.updateGrossSalary();
+		worker.updateIrt();
 		workerRepository.save(worker);
 		
 		contractRepository.deleteById(id);

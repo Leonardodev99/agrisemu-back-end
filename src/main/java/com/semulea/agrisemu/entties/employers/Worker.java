@@ -30,7 +30,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -83,9 +82,7 @@ public class Worker implements Serializable {
 	
 	private Double basySalary;
 	
-	@NotNull(message = "IRT not be null")
 	private Double irt;
-	
 	
 	private Double grossSalary;
 	
@@ -350,6 +347,17 @@ public class Worker implements Serializable {
 			this.basySalary = 0.0;
 		}
 	}
+	
+	public void updateIrt() {
+		if(contracts != null && !contracts.isEmpty()) {
+			this.irt = contracts.stream()
+					.mapToDouble(Contract::itrTax)
+					.sum();
+		} else {
+			this.irt = 0.0;
+		}
+	}
+	
 	
 	public void updateGrossSalary() {
 		if(contracts != null && !contracts.isEmpty()) {
