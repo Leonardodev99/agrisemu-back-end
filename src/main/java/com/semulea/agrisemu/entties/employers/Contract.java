@@ -158,4 +158,7 @@ public class Contract implements Serializable {
 	public Double netSalaryPerMonth() {
 		return grossSalaryPerMonth() - itrTax();
 	}
+	public Double valueContracts() {
+		return netSalaryPerMonth()* worker.getNumberContract();
+	}
 }

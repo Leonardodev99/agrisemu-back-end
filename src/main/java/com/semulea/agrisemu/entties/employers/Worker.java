@@ -368,7 +368,6 @@ public class Worker implements Serializable {
 		}
 	}
 	
-	
 	public void updateNetSalary() {
 		if(contracts != null && !contracts.isEmpty()) {
 			this.netSalary = contracts.stream()
@@ -378,4 +377,15 @@ public class Worker implements Serializable {
 			this.netSalary = 0.0;
 		}
 	}
+	
+	public void updateTotalValueContract() {
+		if(contracts != null && !contracts.isEmpty()) {
+			this.totalValueContract = contracts.stream()
+					.mapToDouble(Contract::valueContracts)
+					.sum();
+		} else {
+			this.totalValueContract = 0.0;
+		}
+	}
+	
 }

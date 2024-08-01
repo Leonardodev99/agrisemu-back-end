@@ -57,6 +57,7 @@ public class ContractService {
         worker.updateGrossSalary();
         worker.updateIrt();
         worker.updateNetSalary();
+        worker.updateTotalValueContract();
         workerRepository.save(worker);
 		
 		Contract savedContract = contractRepository.save(contract);
@@ -95,6 +96,7 @@ public class ContractService {
 		worker.updateGrossSalary();
 		worker.updateIrt();
 		worker.updateNetSalary();
+		worker.updateTotalValueContract();
 		workerRepository.save(worker);
 		return new ContractDTO(updatedContract);
 	}
@@ -108,6 +110,7 @@ public class ContractService {
 		worker.updateGrossSalary();
 		worker.updateIrt();
 		worker.updateNetSalary();
+		worker.updateTotalValueContract();
 		workerRepository.save(worker);
 		
 		contractRepository.deleteById(id);
