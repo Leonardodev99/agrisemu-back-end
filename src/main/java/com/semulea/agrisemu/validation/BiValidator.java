@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class BiValidator implements ConstraintValidator<BiValidation, String> {
 
-    private static final String BI_PATTERN = "00\\d{7}[A-Z]{2}\\d{3}";
+    private static final String BI_PATTERN = "0\\d{8}[A-Z]{2}\\d{3}";
 
     @Override
     public void initialize(BiValidation constraintAnnotation) {

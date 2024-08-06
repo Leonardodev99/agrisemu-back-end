@@ -18,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.semulea.agrisemu.employer.dto.ContractDTO;
 import com.semulea.agrisemu.services.ContractService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/contracts")
 public class ContractResource {
@@ -36,7 +38,7 @@ public class ContractResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	@PostMapping
-	public ResponseEntity<ContractDTO> insert(@RequestBody ContractDTO contractDTO) {
+	public ResponseEntity<ContractDTO> insert(@Valid @RequestBody ContractDTO contractDTO) {
 		contractDTO = contractService.insert(contractDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(contractDTO.getId()).toUri();

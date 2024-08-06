@@ -9,17 +9,32 @@ import org.springframework.beans.BeanUtils;
 
 import com.semulea.agrisemu.entties.employers.Contract;
 import com.semulea.agrisemu.entties.employers.Worker;
+import com.semulea.agrisemu.validation.ValidFinalDate;
+
+import jakarta.validation.constraints.NotNull;
 
 public class ContractDTO {
 	
 	private Long id;
 	private String initialDate;
+	
+	@ValidFinalDate
 	private String finalDate;
+	
+	@NotNull
 	private Double valuePerHour;
+	
+	@NotNull
 	private Long hoursPerDay;
+	
+	@NotNull
 	private Double extraHoursValue;
+	
+	@NotNull
 	private Double additionalValue;
 	private Double taxIrt;
+	
+	@NotNull
 	private Long workerId;
 	
 	private Worker worker;

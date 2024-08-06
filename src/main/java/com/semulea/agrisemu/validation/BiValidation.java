@@ -12,7 +12,7 @@ import jakarta.validation.Payload;
 @Target({ ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BiValidation {
-    String message() default "Invalid BI format. It should have the format 00XXXXXXXAA000.";
+    String message() default "Invalid BI format. It should have the format 0XXXXXXXXAA000.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

@@ -17,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "contracts")
@@ -28,9 +29,17 @@ public class Contract implements Serializable {
 	private Long id;
 	private Instant initialDate;
 	private Instant finalDate;
+	
+	@NotNull
 	private Double valuePerHour;
+	
+	@NotNull
 	private Long hoursPerDay;
+	
+	@NotNull
 	private Double extraHoursValue;
+	
+	@NotNull
 	private Double additionalValue;
 	private Double taxIrt;
 	
