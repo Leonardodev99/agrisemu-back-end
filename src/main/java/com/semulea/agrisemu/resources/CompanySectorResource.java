@@ -1,5 +1,6 @@
 package com.semulea.agrisemu.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.semulea.agrisemu.employer.dto.CompanySectorDTO;
 import com.semulea.agrisemu.services.CompanySectorService;
@@ -38,7 +40,9 @@ public class CompanySectorResource {
 	@PostMapping
 	public ResponseEntity<CompanySectorDTO> insert(@RequestBody CompanySectorDTO obj) {
 		obj = companySectorService.insert(obj);
-		return ResponseEntity.ok().body(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	@PutMapping(value = "/{id}")
