@@ -87,6 +87,12 @@ public class TestConfig implements CommandLineRunner {
 		Instant finalDate2 = localDateTimeFinal2.atStartOfDay(ZoneId.systemDefault()).toInstant();
 		
 		
+		LocalDate localDateTimeInitial3 = LocalDate.parse("14/04/2004 12:30", dateTimeFormatter);
+		Instant registrationDate1 = localDateTimeInitial3.atStartOfDay(ZoneId.systemDefault()).toInstant();
+		LocalDate localDateTimeFinal3 = LocalDate.parse("14/04/2005 14:30", dateTimeFormatter);
+		Instant registrationDate2 = localDateTimeFinal3.atStartOfDay(ZoneId.systemDefault()).toInstant();
+		
+		
 		UserWorker u1 = new UserWorker(null, "Pedro Sambongo", "pedro@gmail.com", "123456");
 		UserWorker u2 = new UserWorker(null, "Miguel Canga", "canga@gmail.com", "123456");
 		
@@ -103,8 +109,8 @@ public class TestConfig implements CommandLineRunner {
 		CompanySector cs1 = new CompanySector(null, EconomicActivity.AGRICULTURE, CompanyType.SMALL, MarketSector.PRIVATE_SECTOR);
 		CompanySector cs2 = new CompanySector(null, EconomicActivity.INFORMATION_TECHNOLOGY, CompanyType.MEDIUM, MarketSector.PRIVATE_SECTOR);
 		
-		Employer q1 = new Employer(null, "DUINOR", "3334567890", "Rangel rua da brigada", "999 934 332","duinor@gmail.com", 2);
-		Employer q2 = new Employer(null, "Semulea", "3324561234", "São Paulo avenida comandante valodia", "999 834 111","semulea@gmail.com", 1);
+		Employer q1 = new Employer(null, "DUINOR", "3334567890", "Rangel rua da brigada", "999 934 332","duinor@gmail.com", 2,registrationDate1);
+		Employer q2 = new Employer(null, "Semulea", "3324561234", "São Paulo avenida comandante valodia", "999 834 111","semulea@gmail.com", 1, registrationDate2);
 		
 		Department d1 = new Department(null, "RH", 4, q1);
 		Department d2 = new Department(null, "Finanças",10,q2);

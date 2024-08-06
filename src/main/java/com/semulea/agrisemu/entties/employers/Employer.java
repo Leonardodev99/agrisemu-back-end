@@ -1,6 +1,7 @@
 package com.semulea.agrisemu.entties.employers;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -58,13 +59,15 @@ public class Employer implements Serializable {
 	private String email;
 
 	private Integer numberDepartment = 0;
+	
+	private Instant registrationDate;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "employer")
 	private List<Department> departments = new ArrayList<>();
 
 	public Employer(Long id, String name, String nif, String address, String phone, String email,
-			Integer numberDepartment) {
+			Integer numberDepartment, Instant registrationDate) {
 		this.id = id;
 		this.name = name;
 		this.nif = nif;
@@ -72,6 +75,7 @@ public class Employer implements Serializable {
 		this.phone = phone;
 		this.email = email;
 		this.numberDepartment = numberDepartment;
+		this.registrationDate = registrationDate;
 	}
 
 	public Employer(EmployerDTO employerDTO) {
@@ -136,6 +140,14 @@ public class Employer implements Serializable {
 
 	public void setNumberDepartment(Integer numberDepartment) {
 		this.numberDepartment = numberDepartment;
+	}
+	
+	public Instant getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Instant registrationDate) {
+		this.registrationDate = registrationDate;
 	}
 
 	

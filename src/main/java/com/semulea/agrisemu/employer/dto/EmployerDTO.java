@@ -1,5 +1,9 @@
 package com.semulea.agrisemu.employer.dto;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +47,8 @@ public class EmployerDTO {
 	
 	private Integer numberDepartment;
 	
+	private String registrationDate;
+	
 	private List<DepartmentDTO> departmentsDTO = new ArrayList<>();
 
 	public EmployerDTO(Employer entity) {
@@ -50,6 +56,9 @@ public class EmployerDTO {
 		this.departmentsDTO = entity.getDepartments().stream()
 				.map(DepartmentDTO::new)
 				.collect(Collectors.toList());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+				.withZone(ZoneId.systemDefault());
+		this.registrationDate = formatter.format(entity.getRegistrationDate());
 	}
 
 	public Long getId() {
@@ -110,6 +119,20 @@ public class EmployerDTO {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(String registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+	
+	public Instant getInitialDateAsInstant() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		LocalDateTime localDateTime = LocalDateTime.parse(this.registrationDate, formatter);
+		return localDateTime.atZone(ZoneId.systemDefault()).toInstant();
 	}
 
 

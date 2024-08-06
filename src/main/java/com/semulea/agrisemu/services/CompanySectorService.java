@@ -38,6 +38,7 @@ public class CompanySectorService {
 		if(existingSector.isPresent()) {
 			throw new CompanySectorAlreadyExistsException("The company sector already exists!");
 		}
+	
 		
 		CompanySector companySector = new CompanySector(obj);
 		CompanySector savedCompanySector = companySectorRepository.save(companySector);

@@ -1,5 +1,6 @@
 package com.semulea.agrisemu.services;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,9 @@ public class EmployerService {
 		if(employerRepository.findByNif(employer.getNif()).isPresent()) {
 			throw new NifAlreadyExistsException("NIF already exists");
 		}
+		Instant registrationDate = Instant.now();
 		Employer obj = new Employer(employer);
+		obj.setRegistrationDate(registrationDate);
 		Employer savedEmployer = employerRepository.save(obj);
 		return new EmployerDTO(savedEmployer);
 	}
