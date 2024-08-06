@@ -14,14 +14,19 @@ import org.springframework.context.annotation.Profile;
 import com.semulea.agrisemu.entties.User;
 import com.semulea.agrisemu.entties.UserAdmin;
 import com.semulea.agrisemu.entties.UserWorker;
+import com.semulea.agrisemu.entties.employers.CompanySector;
 import com.semulea.agrisemu.entties.employers.Contract;
 import com.semulea.agrisemu.entties.employers.Department;
 import com.semulea.agrisemu.entties.employers.Employer;
 import com.semulea.agrisemu.entties.employers.Worker;
+import com.semulea.agrisemu.entties.employers.enums.CompanyType;
+import com.semulea.agrisemu.entties.employers.enums.EconomicActivity;
+import com.semulea.agrisemu.entties.employers.enums.MarketSector;
 import com.semulea.agrisemu.entties.employers.enums.Sex;
 import com.semulea.agrisemu.entties.employers.enums.StatusCivic;
 import com.semulea.agrisemu.entties.employers.enums.TypeContract;
 import com.semulea.agrisemu.entties.employers.enums.WorkerLevel;
+import com.semulea.agrisemu.repositories.CompanySectorRepository;
 import com.semulea.agrisemu.repositories.ContractRepository;
 import com.semulea.agrisemu.repositories.DepartmentRepository;
 import com.semulea.agrisemu.repositories.EmployerRepository;
@@ -54,6 +59,9 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private ContractRepository contractRepository;
+	
+	@Autowired
+	private CompanySectorRepository companySectorRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -92,6 +100,9 @@ public class TestConfig implements CommandLineRunner {
 		User b2 = new User(null, "dani@gmail.com", "999 978 222", "123456");
 		userRepository.saveAll(Arrays.asList(b1,b2));
 		
+		CompanySector cs1 = new CompanySector(null, EconomicActivity.AGRICULTURE, CompanyType.SMALL, MarketSector.PRIVATE_SECTOR);
+		CompanySector cs2 = new CompanySector(null, EconomicActivity.INFORMATION_TECHNOLOGY, CompanyType.MEDIUM, MarketSector.PRIVATE_SECTOR);
+		
 		Employer q1 = new Employer(null, "DUINOR", "3334567890", "Rangel rua da brigada", "999 934 332","duinor@gmail.com", 2);
 		Employer q2 = new Employer(null, "Semulea", "3324561234", "São Paulo avenida comandante valodia", "999 834 111","semulea@gmail.com", 1);
 		
@@ -104,6 +115,8 @@ public class TestConfig implements CommandLineRunner {
 		
 		Contract c1 = new Contract(null, initialDate1, finalDate1, 1000.00, 8L, 1000.0, 2000.00, 3.0, w2);
 		Contract c2 = new Contract(null, initialDate2, finalDate2, 1000.00, 8L, 1000.0, 2000.00, 7.0, w1);
+		
+		companySectorRepository.saveAll(Arrays.asList(cs1,cs2));
 		
 		employerRepository.saveAll(Arrays.asList(q1,q2));
 		departmentRepository.saveAll(Arrays.asList(d1,d2,d3));
