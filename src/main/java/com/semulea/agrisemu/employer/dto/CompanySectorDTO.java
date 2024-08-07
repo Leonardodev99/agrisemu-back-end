@@ -11,14 +11,21 @@ import com.semulea.agrisemu.entties.employers.CompanySector;
 import com.semulea.agrisemu.entties.employers.enums.CompanyType;
 import com.semulea.agrisemu.entties.employers.enums.EconomicActivity;
 import com.semulea.agrisemu.entties.employers.enums.MarketSector;
+import com.semulea.agrisemu.validation.EnumValidation;
 
 public class CompanySectorDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private Integer economicActivity;
-	private Integer companyType;
-	private Integer marketSector;
+	
+	@EnumValidation(enumClass = EconomicActivity.class, message = "Invalid Economic activity value")
+	private String economicActivity;
+	
+	@EnumValidation(enumClass = CompanyType.class, message = "Invalid company type value")
+	private String companyType;
+	
+	@EnumValidation(enumClass = MarketSector.class, message = "Invalid market sector value")
+	private String marketSector;
 	
 	
 	private Set<EmployerDTO> employers = new HashSet<>();
@@ -29,6 +36,9 @@ public class CompanySectorDTO implements Serializable{
 
 	public CompanySectorDTO(CompanySector entity) {
 		BeanUtils.copyProperties(entity, this);
+		this.companyType = entity.getCompanyType().toString();
+		this.economicActivity = entity.getEconomicActivity().toString();
+		this.marketSector = entity.getMarketSector().toString();
 	}
 
 	public Long getId() {
@@ -39,36 +49,30 @@ public class CompanySectorDTO implements Serializable{
 		this.id = id;
 	}
 
-	public EconomicActivity getEconomicActivity() {
-		return EconomicActivity.valueOf(economicActivity);
+	public String getEconomicActivity() {
+		return economicActivity;
 	}
 
-	public void setEconomicActivity(EconomicActivity economicActivity) {
+	public void setEconomicActivity(String economicActivity) {
 		
-		if(economicActivity != null) {
-			this.economicActivity = economicActivity.getCode();
-		}
+			this.economicActivity = economicActivity;
 	}
 
-	public CompanyType getCompanyType() {
-		return CompanyType.valueOf(companyType);
+	public String getCompanyType() {
+		return companyType;
 	}
 
-	public void setCompanyType(CompanyType companyType) {
-		if(companyType != null) {
-			this.companyType = companyType.getCode();
-		}
+	public void setCompanyType(String companyType) {
+			this.companyType = companyType;
 	}
 
-	public MarketSector getMarketSector() {
-		return MarketSector.valueOf(marketSector);
+	public String getMarketSector() {
+		return marketSector;
 	}
 
-	public void setMarketSector(MarketSector marketSector) {
-		if(marketSector != null) {
-			this.marketSector = marketSector.getCode();
-		}
-		
+	public void setMarketSector(String marketSector) {
+	
+			this.marketSector = marketSector;
 	}
 	
 	public Set<EmployerDTO> getEmployers() {

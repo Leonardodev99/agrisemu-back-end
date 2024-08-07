@@ -55,20 +55,20 @@ public class WorkerDTO {
 	private String nationality;
 
 	@EnumValidation(enumClass = Sex.class, message = "Invalid sex value")
-	private Sex sex;
+	private String sex;
 
 	@EnumValidation(enumClass = StatusCivic.class, message = "Invalid status civic value")
-	private StatusCivic statusCivic;
+	private String statusCivic;
 
 	@NotBlank(message = "Nationality is mandatory")
 	@Size(min = 4, max = 50, message = "Nationality must be between 3 and 50 characters")
 	private String education;
 
 	@EnumValidation(enumClass = WorkerLevel.class, message = "Invalid worker level value")
-	private WorkerLevel level;
+	private String level;
 
 	@EnumValidation(enumClass = TypeContract.class, message = "Invalid type contract value")
-	private TypeContract typeContract;
+	private String typeContract;
 
 	private Double basySalary;
 
@@ -107,11 +107,11 @@ public class WorkerDTO {
 		this.dateOfBirth = formatter.format(entity.getDateOfBirth().atZone(ZoneId.systemDefault()).toLocalDate());
 
 		this.nationality = entity.getNationality();
-		this.sex = entity.getSex();
-		this.statusCivic = entity.getStatusCivic();
+		this.sex = entity.getSex().toString();
+		this.statusCivic = entity.getStatusCivic().toString();
 		this.education = entity.getEducation();
-		this.level = entity.getLevel();
-		this.typeContract = entity.getTypeContract();
+		this.level = entity.getLevel().toString();
+		this.typeContract = entity.getTypeContract().toString();
 		this.basySalary = entity.getBasySalary();
 		this.irt = entity.getIrt();
 		this.grossSalary = entity.getGrossSalary();
@@ -157,11 +157,11 @@ public class WorkerDTO {
 		return nationality;
 	}
 
-	public Sex getSex() {
+	public String getSex() {
 		return sex;
 	}
 
-	public StatusCivic getStatusCivic() {
+	public String getStatusCivic() {
 		return statusCivic;
 	}
 
@@ -169,11 +169,11 @@ public class WorkerDTO {
 		return education;
 	}
 
-	public WorkerLevel getLevel() {
+	public String getLevel() {
 		return level;
 	}
 
-	public TypeContract getTypeContract() {
+	public String getTypeContract() {
 		return typeContract;
 	}
 
@@ -225,11 +225,11 @@ public class WorkerDTO {
 		this.nationality = nationality;
 	}
 
-	public void setSex(Sex sex) {
+	public void setSex(String sex) {
 		this.sex = sex;
 	}
 
-	public void setStatusCivic(StatusCivic statusCivic) {
+	public void setStatusCivic(String statusCivic) {
 		this.statusCivic = statusCivic;
 	}
 
@@ -237,11 +237,11 @@ public class WorkerDTO {
 		this.education = education;
 	}
 
-	public void setWorkerLevel(WorkerLevel level) {
+	public void setWorkerLevel(String level) {
 		this.level = level;
 	}
 
-	public void setTypeContract(TypeContract typeContract) {
+	public void setTypeContract(String typeContract) {
 		this.typeContract = typeContract;
 	}
 

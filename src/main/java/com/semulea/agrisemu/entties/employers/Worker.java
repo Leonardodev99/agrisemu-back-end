@@ -30,6 +30,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -68,16 +69,20 @@ public class Worker implements Serializable {
 	@Size(min = 4, max = 50, message = "Nationality must be between 4 and 50 characters")
 	private String nationality;
 	
+	@NotNull
 	private Integer sex;
 	
+	@NotNull
 	private Integer statusCivic;
 	
 	@NotBlank(message = "Nationality is mandatory")
 	@Size(min = 4, max = 50, message = "Nationality must be between 3 and 50 characters")
 	private String education;
 	
+	@NotNull
 	private Integer level;
 	
+	@NotNull
 	private Integer typeContract;
 	
 	private Double basySalary;
@@ -135,10 +140,10 @@ public class Worker implements Serializable {
 	
 	public Worker(WorkerDTO entity) {
 		BeanUtils.copyProperties(entity, this);
-		setSex(entity.getSex());
-		setStatusCivic(entity.getStatusCivic());
-		setWorkerLevel(entity.getLevel());
-		setTypeContract(entity.getTypeContract());
+		setSex(Sex.valueOf(entity.getSex()));
+		setStatusCivic(StatusCivic.valueOf(entity.getStatusCivic()));
+		setWorkerLevel(WorkerLevel.valueOf(entity.getLevel()));
+		setTypeContract(TypeContract.valueOf(entity.getTypeContract()));
 		this.numberContract = entity.getNumberContract();
 		this.totalValueContract = entity.getTotalValueContract();
 		this.netSalary = entity.getNetSalary();

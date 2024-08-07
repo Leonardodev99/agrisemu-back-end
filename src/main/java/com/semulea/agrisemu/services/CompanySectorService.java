@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.semulea.agrisemu.employer.dto.CompanySectorDTO;
 import com.semulea.agrisemu.entties.employers.CompanySector;
+import com.semulea.agrisemu.entties.employers.enums.CompanyType;
+import com.semulea.agrisemu.entties.employers.enums.EconomicActivity;
+import com.semulea.agrisemu.entties.employers.enums.MarketSector;
 import com.semulea.agrisemu.repositories.CompanySectorRepository;
 import com.semulea.agrisemu.services.exceptions.CompanySectorAlreadyExistsException;
 import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
@@ -30,15 +33,14 @@ public class CompanySectorService {
 	}
 	
 	public CompanySectorDTO insert(CompanySectorDTO obj) {
-		Optional<CompanySector> existingSector = companySectorRepository.findAll().stream()
-				.filter(sector -> sector.getEconomicActivity().equals(obj.getEconomicActivity()) &&
-						sector.getCompanyType().equals(obj.getCompanyType()) &&
-						sector.getMarketSector().equals(obj.getMarketSector()))
-				.findFirst();
+		Optional<CompanySector> existingSector = companySectorRepository.findExistingSector(
+				EconomicActivity.valueOf(obj.getEconomicActivity()).getCode(),
+				CompanyType.valueOf(obj.getCompanyType()).getCode(),
+				MarketSector.valueOf(obj.getMarketSector()).getCode()
+						);
 		if(existingSector.isPresent()) {
 			throw new CompanySectorAlreadyExistsException("The company sector already exists!");
 		}
-	
 		
 		CompanySector companySector = new CompanySector(obj);
 		CompanySector savedCompanySector = companySectorRepository.save(companySector);
@@ -49,14 +51,15 @@ public class CompanySectorService {
 		CompanySector existObj = companySectorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		
 		if(obj.getCompanyType() != null) {
-			existObj.setCompanyType(obj.getCompanyType());
+			existObj.setCompanyType(CompanyType.valueOf(obj.getCompanyType()));
 		}
 		if(obj.getEconomicActivity() != null) {
-			existObj.setEconomicActivity(obj.getEconomicActivity());
+			existObj.setEconomicActivity(EconomicActivity.valueOf(obj.getEconomicActivity()));
 		}
-		if(obj.getMarketSector() !=null) {
-			existObj.setMarketSector(obj.getMarketSector());
+		if(obj.getMarketSector() != null) {
+			existObj.setMarketSector(MarketSector.valueOf(obj.getMarketSector()));
 		}
+
 		CompanySector updatedCompanySector = companySectorRepository.save(existObj);
 		return new CompanySectorDTO(updatedCompanySector);
 	}

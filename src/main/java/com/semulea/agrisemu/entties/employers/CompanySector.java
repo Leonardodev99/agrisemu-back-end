@@ -18,6 +18,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "business_sectors")
@@ -27,8 +28,14 @@ public class CompanySector implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotNull
 	private Integer economicActivity;
+	
+	@NotNull
 	private Integer companyType;
+	
+	@NotNull
 	private Integer marketSector;
 	
 	@Transient
@@ -49,6 +56,9 @@ public class CompanySector implements Serializable{
 	
 	public CompanySector(CompanySectorDTO entity) {
 		BeanUtils.copyProperties(entity, this);
+		setCompanyType(CompanyType.valueOf(entity.getCompanyType()));
+		setEconomicActivity(EconomicActivity.valueOf(entity.getEconomicActivity()));
+		setMarketSector(MarketSector.valueOf(entity.getMarketSector()));
 	}
 
 	public Long getId() {

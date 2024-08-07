@@ -3,7 +3,7 @@ package com.semulea.agrisemu.validation;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class EnumValidator implements ConstraintValidator<EnumValidation, Enum<?>> {
+public class EnumValidator implements ConstraintValidator<EnumValidation, String> {
 
     private Class<? extends Enum<?>> enumClass;
 
@@ -13,17 +13,16 @@ public class EnumValidator implements ConstraintValidator<EnumValidation, Enum<?
     }
 
     @Override
-    public boolean isValid(Enum<?> value, ConstraintValidatorContext context) {
+    public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) {
+            return false;
+        }
+
+        try {
+            Enum.valueOf(enumClass.asSubclass(Enum.class), value);
             return true;
+        } catch (IllegalArgumentException e) {
+            return false;
         }
-
-        for (Object enumValue : enumClass.getEnumConstants()) {
-            if (value.equals(enumValue)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

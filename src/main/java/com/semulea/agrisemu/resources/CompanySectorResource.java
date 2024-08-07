@@ -18,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.semulea.agrisemu.employer.dto.CompanySectorDTO;
 import com.semulea.agrisemu.services.CompanySectorService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/companysectors")
 public class CompanySectorResource {
@@ -38,7 +40,7 @@ public class CompanySectorResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<CompanySectorDTO> insert(@RequestBody CompanySectorDTO obj) {
+	public ResponseEntity<CompanySectorDTO> insert(@Valid @RequestBody CompanySectorDTO obj) {
 		obj = companySectorService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri();

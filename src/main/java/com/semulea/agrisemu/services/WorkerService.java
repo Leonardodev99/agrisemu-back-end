@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import com.semulea.agrisemu.employer.dto.WorkerDTO;
 import com.semulea.agrisemu.entties.employers.Department;
 import com.semulea.agrisemu.entties.employers.Worker;
+import com.semulea.agrisemu.entties.employers.enums.StatusCivic;
+import com.semulea.agrisemu.entties.employers.enums.TypeContract;
+import com.semulea.agrisemu.entties.employers.enums.WorkerLevel;
 import com.semulea.agrisemu.repositories.DepartmentRepository;
 import com.semulea.agrisemu.repositories.WorkerRepository;
 import com.semulea.agrisemu.resources.exceptions.EmailAlreadyExistsException;
@@ -46,10 +49,6 @@ public class WorkerService {
 		LocalDate localDate = LocalDate.parse(workerDTO.getDateOfBirth(), formatter);
 		Instant dateOfBirth = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
 		
-		/*if(!dateOfBirth.isBefore(Instant.now()) ) {
-			throw new InvalidDateOfBirthException("Date of birth cannot be today or in the future!");
-		}*/
-		
 		LocalDate today = LocalDate.now();
 		Period period = Period.between(localDate, today);
 		if(period.getYears() < 18) {
@@ -67,10 +66,6 @@ public class WorkerService {
 		
 		Worker worker = new Worker(workerDTO);
 		worker.setDateOfBirth(dateOfBirth);
-		worker.setSex(workerDTO.getSex());
-		worker.setStatusCivic(workerDTO.getStatusCivic());
-		worker.setWorkerLevel(workerDTO.getLevel());
-		worker.setTypeContract(workerDTO.getTypeContract());
 		
 		if(workerDTO.getDepartmentId() != null) {
 			Department department = departmentRepository.findById(workerDTO.getDepartmentId())
@@ -116,17 +111,18 @@ public class WorkerService {
 			existingWorker.setNationality(workerDTO.getNationality());
 		}
 		if (workerDTO.getStatusCivic() != null) {
-			existingWorker.setStatusCivic(workerDTO.getStatusCivic());
-		}
+            existingWorker.setStatusCivic(StatusCivic.valueOf(workerDTO.getStatusCivic()));
+        }
 		if (workerDTO.getEducation() != null && !workerDTO.getEducation().isEmpty()) {
 			existingWorker.setEducation(workerDTO.getEducation());
 		}
-		if (workerDTO.getLevel() != null) {
-			existingWorker.setWorkerLevel(workerDTO.getLevel());
-		}
-		if (workerDTO.getTypeContract() != null) {
-			existingWorker.setTypeContract(workerDTO.getTypeContract());
-		}
+		 if (workerDTO.getLevel() != null) {
+	            existingWorker.setWorkerLevel(WorkerLevel.valueOf(workerDTO.getLevel()));
+	        }
+		 
+		 if (workerDTO.getTypeContract() != null) {
+	            existingWorker.setTypeContract(TypeContract.valueOf(workerDTO.getTypeContract()));
+	        }
 		if (workerDTO.getBasySalary() != null) {
 			existingWorker.setBasySalary(workerDTO.getBasySalary());
 		}
