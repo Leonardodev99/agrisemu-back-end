@@ -88,6 +88,12 @@ public class EmployerService {
 		if(employer.getNumberDepartment() != null) {
 			existsEmployer.setNumberDepartment(employer.getNumberDepartment());
 		}
+		
+		Instant registrationDate = Instant.now();
+		
+		if(employer.getRegistrationDate() != null) {
+			existsEmployer.setRegistrationDate(registrationDate);
+		}
 		Employer updatedEmployer = employerRepository.save(existsEmployer);
 		
 		return new EmployerDTO(updatedEmployer);
