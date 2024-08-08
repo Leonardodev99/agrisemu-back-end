@@ -47,6 +47,9 @@ public class DepartmentService {
 		Department obj = new Department();
 		obj.setName(departmentDTO.getName());
 		obj.setNumberWorkers(departmentDTO.getNumberWorkers());
+		obj.setEmail(departmentDTO.getEmail());
+		obj.setLeader(departmentDTO.getLeader());
+		obj.setPhone(departmentDTO.getPhone());
 		obj.setEmployer(employer);
 		
 		employer.incrementNumberDepartment();

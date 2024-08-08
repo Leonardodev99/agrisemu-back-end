@@ -38,6 +38,12 @@ public class Department implements Serializable {
 	@NotBlank(message = "Name is mandatory")
 	@Size(min = 2, max = 50, message = "Name must be between 3 and 50 characters")
 	private String name;
+	
+	private String leader;
+	
+	private String phone;
+	
+	private String email;
 
 	private Integer numberWorkers = 0;
 	
@@ -49,11 +55,14 @@ public class Department implements Serializable {
 	@ManyToMany(mappedBy = "departments")
 	private Set<Worker> workers = new HashSet<>();
 	
-	public Department(Long id, String name,Integer numberWorkers, Employer employer) {
+	public Department(Long id, String name,Integer numberWorkers, Employer employer, String leader, String phone, String email) {
 		this.id = id;
 		this.name = name;
 		this.numberWorkers = numberWorkers;
 		this.employer = employer;
+		this.leader = leader;
+		this.phone = phone;
+		this.email = email;
 	}
 	public Department(DepartmentDTO departmentDTO) {
 		BeanUtils.copyProperties(departmentDTO, this);
@@ -70,8 +79,15 @@ public class Department implements Serializable {
 	public void setEmployer(Employer employer) {
 		this.employer = employer;
 	}
-	
-	
+	public void setLeader(String leader) {
+		this.leader = leader;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public void incrementNumberWorkers() {
 		this.numberWorkers = (this.numberWorkers != null) ? this.numberWorkers :0;
 		this.numberWorkers++;
@@ -82,4 +98,5 @@ public class Department implements Serializable {
 			this.numberWorkers--;
 		}
 	}
+
 }

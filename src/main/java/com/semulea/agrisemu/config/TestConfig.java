@@ -125,9 +125,9 @@ public class TestConfig implements CommandLineRunner {
         companySectorRepository.saveAll(Arrays.asList(cs1, cs2));
         employerRepository.saveAll(Arrays.asList(q1, q2));
 		
-		Department d1 = new Department(null, "RH", 4, q1);
-		Department d2 = new Department(null, "Finanças",10,q2);
-		Department d3 = new Department(null, "Finanças",10,q1);
+		Department d1 = new Department(null, "RH", 4, q1, "Miguel", "901 222 234", "rh@gmail.com");
+		Department d2 = new Department(null, "Finanças",10,q2, "Alex", "901 222 230", "financa@gmail.com");
+		Department d3 = new Department(null, "Finanças",10,q1, "Anna", "901 222 239", "financa@gmail.com");
 		
 		Worker w1 = new Worker(null, "Alex", "005678914LA041", "222 345 111", "a@gmail.com", "Cazenga", dateOfBirth1, "Angolana", Sex.M, StatusCivic.SINGLE, "Técnico Médio", WorkerLevel.JUNIOR, TypeContract.UNDETERMINED_TIME, 20000.00, 1000.0, 50000.00, 1, 100000.0, 80000.0, 30L);
 		Worker w2 = new Worker(null, "Anna", "005678914LA042", "222 346 202", "an@gmail.com", "Cazenga", dateOfBirth2, "Angolana", Sex.F, StatusCivic.MERRIED, "Técnico Médio", WorkerLevel.MID_LEVEL, TypeContract.DETERMINED_TIME, 20000.00, 1000.0, 50000.00, 1, 100000.0, 80000.0, 30l);
