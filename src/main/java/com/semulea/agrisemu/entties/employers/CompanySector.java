@@ -16,8 +16,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -38,7 +40,10 @@ public class CompanySector implements Serializable{
 	@NotNull
 	private Integer marketSector;
 	
-	@Transient
+	@ManyToMany
+	@JoinTable(name = "sector_employer", 
+	joinColumns = @JoinColumn(name = "sector_id"),
+	inverseJoinColumns = @JoinColumn(name = "employer_id"))
 	private Set<Employer> employers = new HashSet<>();
 	
 	public CompanySector() {

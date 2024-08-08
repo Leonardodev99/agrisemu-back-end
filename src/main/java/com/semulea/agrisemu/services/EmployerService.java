@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.semulea.agrisemu.employer.dto.EmployerDTO;
+import com.semulea.agrisemu.entties.employers.CompanySector;
 import com.semulea.agrisemu.entties.employers.Employer;
+import com.semulea.agrisemu.repositories.CompanySectorRepository;
 import com.semulea.agrisemu.repositories.EmployerRepository;
 import com.semulea.agrisemu.resources.exceptions.EmailAlreadyExistsException;
 import com.semulea.agrisemu.resources.exceptions.PhoneAlreadyExistsException;
@@ -20,6 +22,9 @@ public class EmployerService {
 	
 	@Autowired
 	private EmployerRepository employerRepository;
+	
+	@Autowired
+	private CompanySectorRepository companySectorRepository;
 	
 	public List<EmployerDTO> findAll() {
 		List<Employer> result = employerRepository.findAll();
@@ -51,7 +56,15 @@ public class EmployerService {
 		Instant registrationDate = Instant.now();
 		Employer obj = new Employer(employer);
 		obj.setRegistrationDate(registrationDate);
+		
+		CompanySector companySector = companySectorRepository.findById(employer.getCompanySectorId())
+				.orElseThrow(() -> new ResourceNotFoundException("Company sector not found"));
+		
+		obj.getCompanySectors().add(companySector);
+		companySector.getEmployers().add(obj);
+		
 		Employer savedEmployer = employerRepository.save(obj);
+		companySectorRepository.save(companySector);
 		return new EmployerDTO(savedEmployer);
 	}
 	

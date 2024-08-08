@@ -112,6 +112,19 @@ public class TestConfig implements CommandLineRunner {
 		Employer q1 = new Employer(null, "DUINOR", "3334567890", "Rangel rua da brigada", "999 934 332","duinor@gmail.com", 2,registrationDate1);
 		Employer q2 = new Employer(null, "Semulea", "3324561234", "São Paulo avenida comandante valodia", "999 834 111","semulea@gmail.com", 1, registrationDate2);
 		
+		companySectorRepository.saveAll(Arrays.asList(cs1,cs2));
+		employerRepository.saveAll(Arrays.asList(q1,q2));
+		
+		q1.getCompanySectors().add(cs2);
+		q2.getCompanySectors().add(cs1);
+		
+		cs1.getEmployers().add(q2);
+        cs2.getEmployers().add(q1);
+		
+		
+        companySectorRepository.saveAll(Arrays.asList(cs1, cs2));
+        employerRepository.saveAll(Arrays.asList(q1, q2));
+		
 		Department d1 = new Department(null, "RH", 4, q1);
 		Department d2 = new Department(null, "Finanças",10,q2);
 		Department d3 = new Department(null, "Finanças",10,q1);
@@ -122,11 +135,18 @@ public class TestConfig implements CommandLineRunner {
 		Contract c1 = new Contract(null, initialDate1, finalDate1, 1000.00, 8L, 1000.0, 2000.00, 3.0, w2);
 		Contract c2 = new Contract(null, initialDate2, finalDate2, 1000.00, 8L, 1000.0, 2000.00, 7.0, w1);
 		
-		companySectorRepository.saveAll(Arrays.asList(cs1,cs2));
 		
-		employerRepository.saveAll(Arrays.asList(q1,q2));
+		
+		
+		
+		
+		
+		
+       
+		
 		departmentRepository.saveAll(Arrays.asList(d1,d2,d3));
 		workerRepository.saveAll(Arrays.asList(w1,w2));
+		employerRepository.saveAll(Arrays.asList(q1,q2));
 		
 		w1.getDepartments().add(d1);
 		w2.getDepartments().add(d2);

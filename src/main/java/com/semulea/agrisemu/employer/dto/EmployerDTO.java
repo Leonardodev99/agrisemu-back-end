@@ -49,10 +49,13 @@ public class EmployerDTO {
 	
 	private String registrationDate;
 	
+	private Long companySectorId;
+	
 	private List<DepartmentDTO> departmentsDTO = new ArrayList<>();
 
 	public EmployerDTO(Employer entity) {
 		BeanUtils.copyProperties(entity, this);
+		this.companySectorId = entity.getCompanySectors().stream().findFirst().map(cs -> cs.getId()).orElse(null);
 		this.departmentsDTO = entity.getDepartments().stream()
 				.map(DepartmentDTO::new)
 				.collect(Collectors.toList());
@@ -129,11 +132,18 @@ public class EmployerDTO {
 		this.registrationDate = registrationDate;
 	}
 	
+	public Long getCompanySectorId() {
+		return companySectorId;
+	}
+
+	public void setCompanySectorId(Long companySectorId) {
+		this.companySectorId = companySectorId;
+	}
+	
 	public Instant getInitialDateAsInstant() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		LocalDateTime localDateTime = LocalDateTime.parse(this.registrationDate, formatter);
 		return localDateTime.atZone(ZoneId.systemDefault()).toInstant();
 	}
-
 
 }

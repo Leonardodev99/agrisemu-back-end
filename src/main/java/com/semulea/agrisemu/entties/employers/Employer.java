@@ -3,8 +3,10 @@ package com.semulea.agrisemu.entties.employers;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 
@@ -17,6 +19,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -65,6 +68,10 @@ public class Employer implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "employer")
 	private List<Department> departments = new ArrayList<>();
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "employers")
+	private Set<CompanySector> companySectors = new HashSet<>();
 
 	public Employer(Long id, String name, String nif, String address, String phone, String email,
 			Integer numberDepartment, Instant registrationDate) {
@@ -148,6 +155,10 @@ public class Employer implements Serializable {
 
 	public void setRegistrationDate(Instant registrationDate) {
 		this.registrationDate = registrationDate;
+	}
+	
+	public Set<CompanySector> getCompanySectors() {
+		return companySectors;
 	}
 
 	

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 
@@ -39,6 +40,7 @@ public class CompanySectorDTO implements Serializable{
 		this.companyType = entity.getCompanyType().toString();
 		this.economicActivity = entity.getEconomicActivity().toString();
 		this.marketSector = entity.getMarketSector().toString();
+		this.employers = entity.getEmployers().stream().map(EmployerDTO::new).collect((Collectors.toSet()));
 	}
 
 	public Long getId() {
