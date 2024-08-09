@@ -11,5 +11,5 @@ public interface WorkerRepository extends JpaRepository<Worker, Long>{
 	Optional<Worker> findByEmail(String email);
 	Optional<Worker> findByPhone(String phone);
 	Optional<Worker> findByBi(String bi);
-	//Optional<Worker> findBySex(Sex sex);
+
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.semulea.agrisemu.employer.dto.WorkerDTO;
+import com.semulea.agrisemu.entties.employers.departments.Presence;
 import com.semulea.agrisemu.entties.employers.enums.Sex;
 import com.semulea.agrisemu.entties.employers.enums.StatusCivic;
 import com.semulea.agrisemu.entties.employers.enums.TypeContract;
@@ -108,6 +109,10 @@ public class Worker implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "worker")
 	private List<Contract> contracts = new ArrayList<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "worker")
+	private List<Presence> presences = new ArrayList<>();
 	
 	public Worker() {
 		
@@ -326,6 +331,14 @@ public class Worker implements Serializable {
 
 	public void setDurationContract(Long durationContract) {
 		this.durationContract = durationContract;
+	}
+	
+	public List<Presence> getPresences() {
+		return presences;
+	}
+
+	public void setPresences(List<Presence> presences) {
+		this.presences = presences;
 	}
 
 	@Override

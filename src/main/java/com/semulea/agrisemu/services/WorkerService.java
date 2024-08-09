@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.semulea.agrisemu.employer.dto.WorkerDTO;
 import com.semulea.agrisemu.entties.employers.Department;
 import com.semulea.agrisemu.entties.employers.Worker;
+import com.semulea.agrisemu.entties.employers.departments.Presence;
 import com.semulea.agrisemu.entties.employers.enums.StatusCivic;
 import com.semulea.agrisemu.entties.employers.enums.TypeContract;
 import com.semulea.agrisemu.entties.employers.enums.WorkerLevel;
@@ -145,6 +146,18 @@ public class WorkerService {
 		}
 		
 		workerRepository.deleteById(id);
+	}
+	
+	
+	public WorkerDTO updatePresences(Long workerId, List<Presence> presences) {
+	    Worker worker = workerRepository.findById(workerId).orElseThrow(() -> new ResourceNotFoundException(workerId));
+
+	    
+	    worker.getPresences().clear();
+	    worker.getPresences().addAll(presences);
+	    workerRepository.save(worker);
+
+	    return new WorkerDTO(worker);
 	}
 
 }

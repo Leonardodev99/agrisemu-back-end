@@ -19,6 +19,8 @@ import com.semulea.agrisemu.entties.employers.Contract;
 import com.semulea.agrisemu.entties.employers.Department;
 import com.semulea.agrisemu.entties.employers.Employer;
 import com.semulea.agrisemu.entties.employers.Worker;
+import com.semulea.agrisemu.entties.employers.departments.Presence;
+import com.semulea.agrisemu.entties.employers.departments.enums.StateAbsence;
 import com.semulea.agrisemu.entties.employers.enums.CompanyType;
 import com.semulea.agrisemu.entties.employers.enums.EconomicActivity;
 import com.semulea.agrisemu.entties.employers.enums.MarketSector;
@@ -30,6 +32,7 @@ import com.semulea.agrisemu.repositories.CompanySectorRepository;
 import com.semulea.agrisemu.repositories.ContractRepository;
 import com.semulea.agrisemu.repositories.DepartmentRepository;
 import com.semulea.agrisemu.repositories.EmployerRepository;
+import com.semulea.agrisemu.repositories.PresenceRepository;
 import com.semulea.agrisemu.repositories.UserAdminRepository;
 import com.semulea.agrisemu.repositories.UserRepository;
 import com.semulea.agrisemu.repositories.UserWorkerRepository;
@@ -62,6 +65,9 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private CompanySectorRepository companySectorRepository;
+	
+	@Autowired
+	private PresenceRepository presenceRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -91,6 +97,16 @@ public class TestConfig implements CommandLineRunner {
 		Instant registrationDate1 = localDateTimeInitial3.atStartOfDay(ZoneId.systemDefault()).toInstant();
 		LocalDate localDateTimeFinal3 = LocalDate.parse("14/04/2005 14:30", dateTimeFormatter);
 		Instant registrationDate2 = localDateTimeFinal3.atStartOfDay(ZoneId.systemDefault()).toInstant();
+		
+		
+		/*LocalDate localDate4 = LocalDate.parse("12/04/2002", dateFormatter);
+		Instant date = localDate4.atStartOfDay(ZoneId.systemDefault()).toInstant();*/
+		
+		LocalDate localDateTimeInitial4 = LocalDate.parse("14/04/2004 12:30", dateTimeFormatter);
+		Instant date1 = localDateTimeInitial4.atStartOfDay(ZoneId.systemDefault()).toInstant();
+		LocalDate localDateTimeFinal5 = LocalDate.parse("14/04/2005 14:30", dateTimeFormatter);
+		Instant date2 = localDateTimeFinal5.atStartOfDay(ZoneId.systemDefault()).toInstant();
+		
 		
 		
 		UserWorker u1 = new UserWorker(null, "Pedro Sambongo", "pedro@gmail.com", "123456");
@@ -135,14 +151,10 @@ public class TestConfig implements CommandLineRunner {
 		Contract c1 = new Contract(null, initialDate1, finalDate1, 1000.00, 8L, 1000.0, 2000.00, 3.0, w2);
 		Contract c2 = new Contract(null, initialDate2, finalDate2, 1000.00, 8L, 1000.0, 2000.00, 7.0, w1);
 		
+		Presence p1 = new Presence(null, date1, true, StateAbsence.JUSTIFIED, w2);
 		
+		Presence p2 = new Presence(null, date2, true, StateAbsence.UNJUSTIFIED, w1);
 		
-		
-		
-		
-		
-		
-       
 		
 		departmentRepository.saveAll(Arrays.asList(d1,d2,d3));
 		workerRepository.saveAll(Arrays.asList(w1,w2));
@@ -154,6 +166,9 @@ public class TestConfig implements CommandLineRunner {
 		
 		workerRepository.saveAll(Arrays.asList(w1,w2));
 		contractRepository.saveAll(Arrays.asList(c1,c2));
+		presenceRepository.saveAll(Arrays.asList(p1,p2));
+		
+		
 		
 	
 	}
