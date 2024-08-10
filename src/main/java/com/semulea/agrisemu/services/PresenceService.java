@@ -71,7 +71,13 @@ public class PresenceService {
 			
 			List<String> absenceDates = workerPresences.stream()
 					.filter(p -> !p.getPresence())
-					.map(p -> formatter.format(p.getBusinessDay()))
+					.map(p -> {
+						String formattedDate = formatter.format(p.getBusinessDay());
+						String justificationState = (p.getAbsenceJustification() != null)
+								? "JUSTIFIED"
+								: "UNJUSTIFIED";
+						return formattedDate + " (" + justificationState + ")";
+					})
 					 .collect(Collectors.toList());
 			
 			return new WorkerPresenceAbsenceDTO(
