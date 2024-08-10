@@ -12,7 +12,10 @@ import com.semulea.agrisemu.entties.employers.departments.Presence;
 public class PresenceDTO {
 	
 	private Long id;
+	
 	private String businessDay;
+	
+	
 	private Boolean presence;
 	
 	private String stateAbsence;

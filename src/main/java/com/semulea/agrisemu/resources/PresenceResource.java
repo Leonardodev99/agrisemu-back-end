@@ -3,21 +3,21 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.semulea.agrisemu.employer.dto.WorkerDTO;
-import com.semulea.agrisemu.entties.employers.Worker;
-import com.semulea.agrisemu.entties.employers.departments.dto.AbsenceDTO;
 import com.semulea.agrisemu.entties.employers.departments.dto.PresenceDTO;
+import com.semulea.agrisemu.entties.employers.departments.dto.WorkerPresenceAbsenceDTO;
 import com.semulea.agrisemu.services.PresenceService;
-import com.semulea.agrisemu.services.WorkerService;
 
 @RestController
 @RequestMapping(value = "/presences")
@@ -26,8 +26,6 @@ public class PresenceResource {
     @Autowired
     private PresenceService presenceService;
     
-    @Autowired
-    private WorkerService workerService;
     
     @PostMapping("/{workerId}/register")
     public ResponseEntity<PresenceDTO> registerPresence(@PathVariable Long workerId,
@@ -46,18 +44,16 @@ public class PresenceResource {
         return ResponseEntity.ok(createdPresence);
     }
     
-    @PostMapping("/{workerId}/absences")
-    public ResponseEntity<Integer> countAbsencesByWorkerAndPeriod(@PathVariable Long workerId,
-                                                                  @RequestBody AbsenceDTO absencedto) {
+    @GetMapping("/report")
+    public ResponseEntity<List<WorkerPresenceAbsenceDTO>> getPresencesAbsencesReport(@RequestParam String startDate, @RequestParam String endDate) {
         
-    	 Instant startInstant = convertToInstant(absencedto.getStartDate());
-         Instant endInstant = convertToInstant(absencedto.getEndDate());
+    	 Instant startInstant = convertToInstant(startDate);
+         Instant endInstant = convertToInstant(endDate);
     	
-    	WorkerDTO workerDTO = workerService.findById(workerId);
-        Worker worker = new Worker(workerDTO);
+         List<WorkerPresenceAbsenceDTO> report = presenceService.getPresenceAbsenceReportForAllworker(startInstant, endInstant);
         
-        int absences = presenceService.countAbsencesByWorkerAndPeriod(worker, startInstant, endInstant);
-        return ResponseEntity.ok(absences);
+        return ResponseEntity.ok(report);
+    
     }
     
     private Instant convertToInstant(String dateTime) {

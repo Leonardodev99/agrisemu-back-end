@@ -99,14 +99,10 @@ public class TestConfig implements CommandLineRunner {
 		Instant registrationDate2 = localDateTimeFinal3.atStartOfDay(ZoneId.systemDefault()).toInstant();
 		
 		
-		/*LocalDate localDate4 = LocalDate.parse("12/04/2002", dateFormatter);
-		Instant date = localDate4.atStartOfDay(ZoneId.systemDefault()).toInstant();*/
-		
-		LocalDate localDateTimeInitial4 = LocalDate.parse("14/04/2004 12:30", dateTimeFormatter);
+		LocalDate localDateTimeInitial4 = LocalDate.parse("14/07/2024 12:30", dateTimeFormatter);
 		Instant date1 = localDateTimeInitial4.atStartOfDay(ZoneId.systemDefault()).toInstant();
-		LocalDate localDateTimeFinal5 = LocalDate.parse("14/04/2005 14:30", dateTimeFormatter);
+		LocalDate localDateTimeFinal5 = LocalDate.parse("14/07/2024 14:30", dateTimeFormatter);
 		Instant date2 = localDateTimeFinal5.atStartOfDay(ZoneId.systemDefault()).toInstant();
-		
 		
 		
 		UserWorker u1 = new UserWorker(null, "Pedro Sambongo", "pedro@gmail.com", "123456");
