@@ -1,6 +1,8 @@
 package com.semulea.agrisemu.entties.employers.departments;
 
+import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 
 import org.springframework.beans.BeanUtils;
 
@@ -18,7 +20,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "presences")
-public class Presence {
+public class Presence implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +31,8 @@ public class Presence {
 	private Boolean presence;
 	
 	private Integer stateAbsence;
+	
+	private String absenceJustification;
 	
 	@ManyToOne
 	@JoinColumn(name = "worker_id", nullable = false)
@@ -91,7 +97,32 @@ public class Presence {
 		if(stateAbsence != null) {
 			this.stateAbsence = stateAbsence.getCode();
 		}
-		
 	}
+
+	public String getAbsenceJustification() {
+		return absenceJustification;
+	}
+
+	public void setAbsenceJustification(String absenceJustification) {
+		this.absenceJustification = absenceJustification;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Presence other = (Presence) obj;
+		return Objects.equals(id, other.id);
+	}
+	
 	
 }

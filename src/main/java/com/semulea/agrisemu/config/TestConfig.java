@@ -147,9 +147,9 @@ public class TestConfig implements CommandLineRunner {
 		Contract c1 = new Contract(null, initialDate1, finalDate1, 1000.00, 8L, 1000.0, 2000.00, 3.0, w2);
 		Contract c2 = new Contract(null, initialDate2, finalDate2, 1000.00, 8L, 1000.0, 2000.00, 7.0, w1);
 		
-		Presence p1 = new Presence(null, date1, true, StateAbsence.JUSTIFIED, w2);
+		Presence p1 = new Presence(null, date1, false, StateAbsence.UNJUSTIFIED, w2);
 		
-		Presence p2 = new Presence(null, date2, true, StateAbsence.UNJUSTIFIED, w1);
+		Presence p2 = new Presence(null, date2, true, StateAbsence.THERE_WAS_NO_MISSING, w1);
 		
 		
 		departmentRepository.saveAll(Arrays.asList(d1,d2,d3));

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.semulea.agrisemu.entties.employers.Worker;
 import com.semulea.agrisemu.entties.employers.departments.Presence;
+import com.semulea.agrisemu.entties.employers.departments.dto.JustifyAbsenceDTO;
 import com.semulea.agrisemu.entties.employers.departments.dto.PresenceDTO;
 import com.semulea.agrisemu.entties.employers.departments.dto.WorkerPresenceAbsenceDTO;
 import com.semulea.agrisemu.entties.employers.departments.enums.StateAbsence;
@@ -49,19 +50,7 @@ public class PresenceService {
 				.map(PresenceDTO::new)
 				.collect(Collectors.toList());
 	}
-	
-	/*public int countAbsencesByWorkerAndPeriod(Worker worker, Instant start, Instant end) {
-		return presenceRepository.countAbsencesByWorkerAndBusinessDayBetween(worker, start, end);
-	}
-	
-	public PresenceCountDTO countPresencesAndAbsencesByWorkerAndPeriod(Worker worker, Instant start, Instant end) {
-		
-		int presences = presenceRepository.countPresencesByWorkerAndPeriod(worker, start, end);
-		int absences = presenceRepository.countAbsencesByWorkerAndPeriod(worker, start, end);
-		
-		return new PresenceCountDTO(presences, absences);
-   }*/
-	
+
 	public List<WorkerPresenceAbsenceDTO> getPresenceAbsenceReportForAllworker(Instant start, Instant end) {
 		List<Presence> presences = presenceRepository.findPresencesByPeriod(start, end);
 		
@@ -93,5 +82,19 @@ public class PresenceService {
 					absenceDates
 					);
 		}).collect(Collectors.toList());
+	}
+	
+	public PresenceDTO justifyAbsence(JustifyAbsenceDTO justifyAbsenceDTO) {
+		Presence presence = presenceRepository.findById(justifyAbsenceDTO.getPresenceId())
+				.orElseThrow(() -> new ResourceNotFoundException(justifyAbsenceDTO.getPresenceId()));
+		if(!presence.getPresence()) {
+			presence.setAbsenceJustification(justifyAbsenceDTO.getJustification());
+			presence = presenceRepository.save(presence);
+			
+		} else {
+			throw new IllegalArgumentException("A presença não pode ser justificada");
+		}
+		
+		return new PresenceDTO(presence);
 	}
 }

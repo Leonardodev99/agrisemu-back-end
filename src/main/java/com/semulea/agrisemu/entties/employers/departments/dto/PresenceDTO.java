@@ -12,11 +12,9 @@ import com.semulea.agrisemu.entties.employers.departments.Presence;
 public class PresenceDTO {
 	
 	private Long id;
-	
 	private String businessDay;
-	
-	
 	private Boolean presence;
+	private String absenceJustification;
 	
 	private String stateAbsence;
 	
@@ -30,6 +28,7 @@ public class PresenceDTO {
 		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
 	                .withZone(ZoneId.systemDefault());
 	        this.businessDay = formatter.format(entity.getBusinessDay());
+	        this.absenceJustification = entity.getAbsenceJustification();
 		
 	}
 
@@ -64,7 +63,15 @@ public class PresenceDTO {
 	public void setStateAbsence(String stateAbsence) {
 		this.stateAbsence = stateAbsence;
 	}
-	 public Instant getBusinessDayAsInstant() {
+	 public String getAbsenceJustification() {
+		return absenceJustification;
+	}
+
+	public void setAbsenceJustification(String absenceJustification) {
+		this.absenceJustification = absenceJustification;
+	}
+
+	public Instant getBusinessDayAsInstant() {
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 	        LocalDateTime localDateTime = LocalDateTime.parse(this.businessDay, formatter);
 	        return localDateTime.atZone(ZoneId.systemDefault()).toInstant();

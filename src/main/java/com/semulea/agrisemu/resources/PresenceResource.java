@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.semulea.agrisemu.entties.employers.departments.dto.JustifyAbsenceDTO;
 import com.semulea.agrisemu.entties.employers.departments.dto.PresenceDTO;
 import com.semulea.agrisemu.entties.employers.departments.dto.WorkerPresenceAbsenceDTO;
 import com.semulea.agrisemu.services.PresenceService;
@@ -60,6 +61,12 @@ public class PresenceResource {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(dateTime, formatter);
         return localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+    }
+    
+    @PostMapping("/justify")
+    public ResponseEntity<PresenceDTO> justifyAbsence(@RequestBody JustifyAbsenceDTO justifyAbsenceDTO) {
+    	PresenceDTO justifiedPresence = presenceService.justifyAbsence(justifyAbsenceDTO);
+    	return ResponseEntity.ok(justifiedPresence);
     }
 }
 
