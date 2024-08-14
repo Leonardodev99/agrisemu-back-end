@@ -10,12 +10,14 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.semulea.agrisemu.entties.employers.Contract;
 import com.semulea.agrisemu.entties.employers.Worker;
 import com.semulea.agrisemu.entties.employers.departments.Presence;
 import com.semulea.agrisemu.entties.employers.departments.dto.PayrollDTO;
 import com.semulea.agrisemu.entties.employers.departments.enums.StateAbsence;
 import com.semulea.agrisemu.repositories.PresenceRepository;
 import com.semulea.agrisemu.repositories.WorkerRepository;
+import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class PayrollService {
@@ -41,7 +43,9 @@ public class PayrollService {
 			int nonJustifiedAbsences = totalAbsences - justifiedAbsences;
 			Double netSalary = worker.getNetSalary();
 			
-			Double salaryToReceive = nonJustifiedAbsences > 0 ? netSalary - nonJustifiedAbsences : netSalary;
+			Double dailySalary = getDailySalary(worker);
+			
+			Double salaryToReceive = nonJustifiedAbsences > 0 ? netSalary - (nonJustifiedAbsences * dailySalary)  : netSalary;
 			
 			List<String> absenceDates = presences.stream()
 					.filter(p -> !p.getPresence())
@@ -55,6 +59,12 @@ public class PayrollService {
 		}
 		
 		return payrolls;
+	}
+	
+	private Double getDailySalary(Worker worker) {
+		Contract activeContract = worker.getContracts().stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("worker has no active contract"));
+		Double dailySalary = activeContract.getValuePerHour() * activeContract.getHoursPerDay();
+		return dailySalary;
 	}
 
 }

@@ -9,6 +9,7 @@ public class PayrollDTO {
 	private int totalAbasences;
 	private int justifiedAbsences;
 	private Double salaryToReceive;
+	private Double dailySalary;
 	private List<String> absenceDates;
 	
 	public PayrollDTO(String workerName, Double netSalary, int totalAbasences, int justifiedAbsences,
@@ -69,4 +70,13 @@ public class PayrollDTO {
 	public void setAbsenceDates(List<String> absenceDates) {
 		this.absenceDates = absenceDates;
 	}
+
+	public Double getDailySalary() {
+		return dailySalary;
+	}
+
+	public void setDailySalary(Double dailySalary) {
+		this.dailySalary = dailySalary;
+	}
+	
 }
