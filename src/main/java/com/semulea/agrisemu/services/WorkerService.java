@@ -24,6 +24,7 @@ import com.semulea.agrisemu.resources.exceptions.PhoneAlreadyExistsException;
 import com.semulea.agrisemu.services.exceptions.BiAlreadyExistsException;
 import com.semulea.agrisemu.services.exceptions.InvalidDateOfBirthException;
 import com.semulea.agrisemu.services.exceptions.ResourceNotFoundException;
+import com.semulea.agrisemu.services.exceptions.WorkerAlreadyInDepartmentException;
 
 @Service
 public class WorkerService {
@@ -55,26 +56,32 @@ public class WorkerService {
 		if(period.getYears() < 18) {
 			throw new InvalidDateOfBirthException("Worker must be 18 years or older!");
 		}
-		if (workerRepository.findByEmail(workerDTO.getEmail()).isPresent()) {
-			throw new BiAlreadyExistsException("BI already exists!");
-		}
-		if (workerRepository.findByPhone(workerDTO.getPhone()).isPresent()) {
-			throw new PhoneAlreadyExistsException("Phone already exists!");
-		}
-		if (workerRepository.findByEmail(workerDTO.getEmail()).isPresent()) {
-			throw new EmailAlreadyExistsException("Email already exists!");
-		}
+
+		Worker worker = workerRepository.findByBi(workerDTO.getBi())
+	            .or(() -> workerRepository.findByPhone(workerDTO.getPhone()))
+	            .or(() -> workerRepository.findByEmail(workerDTO.getEmail()))
+	            .orElse(null);
 		
-		Worker worker = new Worker(workerDTO);
-		worker.setDateOfBirth(dateOfBirth);
+		if (worker == null) {
+	        
+	        worker = new Worker(workerDTO);
+	        worker.setDateOfBirth(dateOfBirth);
+	    } else {
+	        
+	        if (worker.getDepartments().stream().anyMatch(d -> d.getId().equals(workerDTO.getDepartmentId()))) {
+	            throw new WorkerAlreadyInDepartmentException("Worker is already in this department!");
+	        }
+	    }
 		
-		if(workerDTO.getDepartmentId() != null) {
-			Department department = departmentRepository.findById(workerDTO.getDepartmentId())
-					.orElseThrow(() -> new ResourceNotFoundException("Department not found"));
-			worker.getDepartments().add(department);
-			department.incrementNumberWorkers();
-			departmentRepository.save(department);
-		}
+		 if(workerDTO.getDepartmentId() != null) {
+		        Department department = departmentRepository.findById(workerDTO.getDepartmentId())
+		                .orElseThrow(() -> new ResourceNotFoundException("Department not found"));
+		        
+		        worker.getDepartments().add(department);
+		        department.incrementNumberWorkers();
+		        departmentRepository.save(department);
+		    }
+		
 		
 		Worker saveWorker = workerRepository.save(worker);
 		return new WorkerDTO(saveWorker);
@@ -85,7 +92,7 @@ public class WorkerService {
 
 		if (workerDTO.getBi() != null && !workerDTO.getBi().isEmpty()) {
 
-			if (workerRepository.findByEmail(workerDTO.getEmail()).isPresent()) {
+			if (workerRepository.findByBi(workerDTO.getBi()).isPresent()) {
 				throw new BiAlreadyExistsException("BI already exists!");
 			}
 			existingWorker.setBi(workerDTO.getBi());
