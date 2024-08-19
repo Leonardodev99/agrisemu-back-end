@@ -98,7 +98,7 @@ public class PresenceService {
 			presence = presenceRepository.save(presence);
 			
 		} else {
-			throw new IllegalArgumentException("A presença não pode ser justificada");
+			throw new ResourceNotFoundException("Presence cannot be justified");
 		}
 		
 		return new PresenceDTO(presence);

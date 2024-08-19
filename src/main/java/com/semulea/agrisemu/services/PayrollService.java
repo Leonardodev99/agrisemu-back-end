@@ -61,6 +61,36 @@ public class PayrollService {
 		return payrolls;
 	}
 	
+	public PayrollDTO generatePayrollForWorker(Long workerId, Instant start, Instant end) {
+		Worker worker = workerRepository.findById(workerId)
+				.orElseThrow(() -> new ResourceNotFoundException(workerId));
+		
+		List<Presence> presences = presenceRepository.findPresencesByWorkerAndPeriod(worker, start, end);
+		
+		 int totalAbsences = (int) presences.stream().filter(p -> !p.getPresence()).count();
+           int justifiedAbsences = (int) presences.stream()
+               .filter(p -> !p.getPresence() && p.getStateAbsence() == StateAbsence.JUSTIFIED)
+               .count();
+           
+		int nonJustifiedAbsences = totalAbsences - justifiedAbsences;
+		Double netSalary = worker.getNetSalary();
+		
+		Double dailySalary = getDailySalary(worker);
+		
+		Double salaryToReceive = nonJustifiedAbsences > 0 ? netSalary - (nonJustifiedAbsences * dailySalary)  : netSalary;
+		
+		List<String> absenceDates = presences.stream()
+				.filter(p -> !p.getPresence())
+				.map(p -> {
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone(ZoneId.systemDefault());
+					return formatter.format(p.getBusinessDay()) + " (" + p.getStateAbsence() + ")";
+				})
+				.collect(Collectors.toList());
+		
+		return new PayrollDTO(worker.getName(), netSalary, justifiedAbsences, nonJustifiedAbsences, salaryToReceive, absenceDates);
+		
+	}
+	
 	private Double getDailySalary(Worker worker) {
 		Contract activeContract = worker.getContracts().stream().findFirst().orElseThrow(() -> new ResourceNotFoundException("worker has no active contract"));
 		Double dailySalary = activeContract.getValuePerHour() * activeContract.getHoursPerDay();
