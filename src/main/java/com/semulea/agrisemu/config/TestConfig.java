@@ -19,6 +19,7 @@ import com.semulea.agrisemu.entties.employers.Contract;
 import com.semulea.agrisemu.entties.employers.Department;
 import com.semulea.agrisemu.entties.employers.Employer;
 import com.semulea.agrisemu.entties.employers.Worker;
+import com.semulea.agrisemu.entties.employers.clients.ClientPersonal;
 import com.semulea.agrisemu.entties.employers.departments.Presence;
 import com.semulea.agrisemu.entties.employers.departments.enums.StateAbsence;
 import com.semulea.agrisemu.entties.employers.enums.CompanyType;
@@ -28,6 +29,7 @@ import com.semulea.agrisemu.entties.employers.enums.Sex;
 import com.semulea.agrisemu.entties.employers.enums.StatusCivic;
 import com.semulea.agrisemu.entties.employers.enums.TypeContract;
 import com.semulea.agrisemu.entties.employers.enums.WorkerLevel;
+import com.semulea.agrisemu.repositories.ClientPersonalRepository;
 import com.semulea.agrisemu.repositories.CompanySectorRepository;
 import com.semulea.agrisemu.repositories.ContractRepository;
 import com.semulea.agrisemu.repositories.DepartmentRepository;
@@ -68,6 +70,9 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private PresenceRepository presenceRepository;
+	
+	@Autowired
+	private ClientPersonalRepository clientPersonalRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -151,6 +156,8 @@ public class TestConfig implements CommandLineRunner {
 		
 		Presence p2 = new Presence(null, date2, true, StateAbsence.THERE_WAS_NO_MISSING, w1);
 		
+		ClientPersonal cp1 = new ClientPersonal(null, "Anna Maria", "am@gmail.com","931 222 333" , "Viana");
+		ClientPersonal cp2 = new ClientPersonal(null, "Maria", "m@gmail.com","931 222 330" , "Luana");
 		
 		departmentRepository.saveAll(Arrays.asList(d1,d2,d3));
 		workerRepository.saveAll(Arrays.asList(w1,w2));
@@ -163,6 +170,8 @@ public class TestConfig implements CommandLineRunner {
 		workerRepository.saveAll(Arrays.asList(w1,w2));
 		contractRepository.saveAll(Arrays.asList(c1,c2));
 		presenceRepository.saveAll(Arrays.asList(p1,p2));
+		
+		clientPersonalRepository.saveAll(Arrays.asList(cp1,cp2));
 		
 		
 		
