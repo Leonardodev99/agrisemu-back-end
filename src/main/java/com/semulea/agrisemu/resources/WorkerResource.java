@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -54,9 +55,15 @@ public class WorkerResource {
 		return ResponseEntity.ok().body(workerDTO);
 	}
 	
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		workerService.delete(id);
+	@DeleteMapping(value = "/{workerId}")
+	public ResponseEntity<Void> delete(@PathVariable Long workerId, @RequestParam(defaultValue = "true") boolean deleteFromAllDepartments) {
+		workerService.delete(workerId, deleteFromAllDepartments);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@DeleteMapping(value = "/{workerId}/departments/{departmentId}")
+	public ResponseEntity<Void> deleteFromDepartment(@PathVariable Long workerId, @PathVariable Long departmentId) {
+		workerService.deleteFromDepartment(workerId, departmentId);
 		return ResponseEntity.noContent().build();
 	}
 

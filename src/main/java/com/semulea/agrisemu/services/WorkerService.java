@@ -145,14 +145,44 @@ public class WorkerService {
 		return new WorkerDTO(updatedWorker);
 	}
 	
-	public void delete(Long id) {
-		Worker existingWorker = workerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-		for(Department department : existingWorker.getDepartments()) {
+	public void deleteFromDepartment(Long workerId, Long departmentId) {
+		Worker worker = workerRepository.findById(workerId)
+				.orElseThrow(() -> new ResourceNotFoundException("Worker not found with id: " + workerId));
+		Department department = departmentRepository.findById(departmentId)
+				.orElseThrow(() -> new ResourceNotFoundException("Department not found with id: " + departmentId));
+		
+		if(worker.getDepartments().contains(department)) {
+			worker.getDepartments().remove(department);
+			
+			department.getWorkers().remove(worker);
+			
 			department.decrementNumberWorkers();
+			
 			departmentRepository.save(department);
+			workerRepository.save(worker);
+			
+			if(worker.getDepartments().isEmpty()) {
+				workerRepository.deleteById(workerId);
+			}
+		} else {
+			throw new ResourceNotFoundException("Worker not associated with department with id: " +departmentId);
+		}
+	}
+	
+	public void delete(Long workerId, boolean deleteFromAllDepartments) {
+		Worker worker = workerRepository.findById(workerId).orElseThrow(() -> new ResourceNotFoundException(workerId));
+		
+		if(deleteFromAllDepartments) {
+			for(Department department : worker.getDepartments()) {
+				department.decrementNumberWorkers();
+				departmentRepository.save(department);
+			}
+			
+			workerRepository.deleteById(workerId);
+		}else {
+			throw new ResourceNotFoundException("Please spacify the department from which to remove the worker");
 		}
 		
-		workerRepository.deleteById(id);
 	}
 	
 	
