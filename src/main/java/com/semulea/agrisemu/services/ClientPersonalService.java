@@ -35,23 +35,31 @@ public class ClientPersonalService {
 	
 	public ClientPersonalDTO update(Long id, ClientPersonalDTO clientPersonalDTO) {
 		ClientPersonal existsClientPersonal = clientPersonalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		
 		if(clientPersonalDTO.getEmail() != null && !clientPersonalDTO.getEmail().isEmpty()) {
 			
 			existsClientPersonal.setEmail(clientPersonalDTO.getEmail());
 		}
 		
-		if(clientPersonalDTO.getPhone() != null && clientPersonalDTO.getPhone().isEmpty()) {
+		if(clientPersonalDTO.getPhone() != null && !clientPersonalDTO.getPhone().isEmpty()) {
 			
 
 			existsClientPersonal.setPhone(clientPersonalDTO.getPhone());
 		}
 		
-		if(clientPersonalDTO.getName() !=null && clientPersonalDTO.getName().isEmpty()) {
+		if(clientPersonalDTO.getName() !=null && !clientPersonalDTO.getName().isEmpty()) {
 			existsClientPersonal.setName(clientPersonalDTO.getName());
 		}
 		
 		ClientPersonal updatedClientPersonal = clientPersonalRepository.save(existsClientPersonal);
 		return new ClientPersonalDTO(updatedClientPersonal);
+	}
+	
+	public void delete(Long id) {
+		if(!clientPersonalRepository.existsById(id)) {
+			throw new ResourceNotFoundException(id);
+		}
+		clientPersonalRepository.deleteById(id);
 	}
 	
 
