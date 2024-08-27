@@ -6,12 +6,22 @@ import org.springframework.beans.BeanUtils;
 
 import com.semulea.agrisemu.entties.employers.clients.ClientPersonal;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class ClientPersonalDTO {
 	
+	
 	private Long id;
+	
+	@NotBlank(message = "Client name is mandatoy")
+	@Size(min = 2, max = 50, message = "Name must be between 3 and 50 characters")
 	private String name;
 	private String email;
 	private String phone;
+	
+	@NotBlank(message = "Client address is mandatoy")
+	@Size(min = 3, max = 200, message = "Address must be between 3 and 200 characters")
 	private String address;
 	
 	public ClientPersonalDTO() {
